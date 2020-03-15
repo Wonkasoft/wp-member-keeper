@@ -1,0 +1,129 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+#wpbody {
+	position: relative;
+	max-width: 100%;
+}
+
+.wp-member-keeper-settings-page-wrap {
+	padding: 15px 15px 15px 0;
+}
+
+.wp-member-keeper-settings-page-wrap input[type=submit] {
+	position: relative;
+	display: inline-block;
+	margin: 15px auto;
+	padding: 8px 15px;
+	font-size: 1.3rem;
+	color: #ffffff;
+	border: none;
+	border-radius: 4px;
+	background: rgba(66, 75, 233, 0.6);
+	text-transform: uppercase;
+	box-shadow: 0 1px 3px 0 rgba( 0,0,0,.5 );
+}
+
+.wp-member-keeper-settings-page-wrap .wpmk-header-section {
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+
+.wp-member-keeper-settings-page-wrap .wpmk-header-section .logo-container {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-right: 25px;
+}
+
+.wp-member-keeper-settings-page-wrap .wpmk-header-section .logo-container img {
+	max-width: 150px;
+}
+
+.wp-member-keeper-settings-page-wrap .wpmk-header-section .logo-container #logo-img,
+.wp-member-keeper-settings-page-wrap .wpmk-header-section .logo-container #logo-submit {
+	display: none;
+}
+
+.wp-member-keeper-settings-page-wrap .wpmk-header-section .header-title-container {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+.wp-member-keeper-settings-page-wrap .wpmk-header-section h2 {
+	margin: auto;
+	font-size: 1.7rem;
+}
+
+.wpmk-fields-container {
+	padding-top: 40px;
+}
+
+.wpmk-fields-container .tab-row {
+	position: relative;
+	display: flex;
+	align-items: center;
+	width: 100%;
+	border-bottom: 1px solid rgba(66, 75, 233, 0.6);
+}
+
+.wpmk-fields-container .tab-row .tab-list {
+	position: relative;
+	display: flex;
+	align-items: center;
+	margin: 0 0 -1px;
+}
+
+.wpmk-fields-container .tab-row .tab-list .tab-item {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0;
+	padding: 8px 25px;
+	border-radius: 4px 4px 0 0;
+	border: 1px solid rgba(66, 75, 233, 0.6);
+	opacity: .4;
+	cursor: pointer;
+	-o-transition: all .3s ease-in-out;
+	-moz-transition: all .3s ease-in-out;
+	-webkit-transition: all .3s ease-in-out;
+	transition: all .3s ease-in-out;
+}
+
+.wpmk-fields-container .tab-row .tab-list .tab-item:first-child {
+	margin-left: 15px;
+}
+
+.wpmk-fields-container .tab-row .tab-list .tab-item.active {
+	opacity: 1;
+	border-bottom-color: #f1f1f1;
+}
+
+.wpmk-fields-container .tab-row .tab-list .tab-item.disabled {
+	opacity: .2;
+	cursor: not-allowed;
+}
+
+.wpmk-fields-container .tab-row .tab-list .tab-item h5 {
+	margin: auto;
+}
+
+.wpmk-fields-container .tab-content {
+	position: relative;
+	padding: 15px;
+	display: none;
+	-o-transition: all .3s ease-in-out;
+	-moz-transition: all .3s ease-in-out;
+	-webkit-transition: all .3s ease-in-out;
+	transition: all .3s ease-in-out;
+}
+
+.wpmk-fields-container .tab-content.active {
+	display: block;
+}
