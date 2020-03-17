@@ -22,67 +22,75 @@ defined( 'WPINC' ) || exit;
 
 				global $wpdb;
 				$table_name = $wpdb->prefix . str_replace( ' ', '_', str_replace( 'wp ', '', strtolower( WP_MEMBER_KEEPER_NAME ) ) );
-				$results = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM ' . $table_name ) );
-				
+				$results    = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM ' . $table_name ) );
+
 				$current_logo_id = get_option( 'wp_member_keeper_logo' );
-					
-				if ( !empty( $_FILES ) ) :
 
-					$wordpress_upload_dir = wp_upload_dir();
-					$logo_img = $_FILES['logo-img'];
-					$new_file_path = $wordpress_upload_dir['path'] . '/' . $logo_img['name'];
-					$new_file_mime = mime_content_type( $logo_img['tmp_name'] );
-					$i = 1;
+			if ( ! empty( $_FILES ) ) :
 
-					if( empty( $logo_img ) )
-						die( 'File is not selected.' );
-					 
-					if( $logo_img['error'] )
-						die( $logo_img['error'] );
-					 
-					if( $logo_img['size'] > wp_max_upload_size() )
-						die( 'It is too large than expected.' );
-					 
-					if( !in_array( $new_file_mime, get_allowed_mime_types() ) )
-						die( 'WordPress doesn\'t allow this type of uploads.' );
+				$wordpress_upload_dir = wp_upload_dir();
+				$logo_img             = $_FILES['logo-img'];
+				$new_file_path        = $wordpress_upload_dir['path'] . '/' . $logo_img['name'];
+				$new_file_mime        = mime_content_type( $logo_img['tmp_name'] );
+				$i                    = 1;
 
-					while( file_exists( $new_file_path ) ) {
-						$i++;
-						$new_file_path = $wordpress_upload_dir['path'] . '/' . $i . '_' . $logo_img['name'];
-					}
+				if ( empty( $logo_img ) ) {
+					die( 'File is not selected.' );
+				}
 
-					// looks like everything is OK
-					if( move_uploaded_file( $logo_img['tmp_name'], $new_file_path ) ) {
-					 
-					 
-						$upload_id = wp_insert_attachment( array(
-							'guid'           => $new_file_path, 
+				if ( $logo_img['error'] ) {
+					die( $logo_img['error'] );
+				}
+
+				if ( $logo_img['size'] > wp_max_upload_size() ) {
+					die( 'It is too large than expected.' );
+				}
+
+				if ( ! in_array( $new_file_mime, get_allowed_mime_types() ) ) {
+					die( 'WordPress doesn\'t allow this type of uploads.' );
+				}
+
+				while ( file_exists( $new_file_path ) ) {
+					$i++;
+					$new_file_path = $wordpress_upload_dir['path'] . '/' . $i . '_' . $logo_img['name'];
+				}
+
+				// looks like everything is OK
+				if ( move_uploaded_file( $logo_img['tmp_name'], $new_file_path ) ) {
+
+
+					$upload_id = wp_insert_attachment(
+						array(
+							'guid'           => $new_file_path,
 							'post_mime_type' => $new_file_mime,
 							'post_title'     => preg_replace( '/\.[^.]+$/', '', $logo_img['name'] ),
 							'post_content'   => '',
-							'post_status'    => 'inherit'
-						), $new_file_path );
-					 
-						// wp_generate_attachment_metadata() won't work if you do not include this file
-						require_once( ABSPATH . 'wp-admin/includes/image.php' );
-					 
-						// Generate and save the attachment metas into the database
-						wp_update_attachment_metadata( $upload_id, wp_generate_attachment_metadata( $upload_id, $new_file_path ) );
+							'post_status'    => 'inherit',
+						),
+						$new_file_path
+					);
 
-						if ( $current_logo_id !== $upload_id ) :
-							wp_delete_attachment( $current_logo_id, true );
-							$current_logo_id = $upload_id;
-						endif;
+					// wp_generate_attachment_metadata() won't work if you do not include this file
+					require_once ABSPATH . 'wp-admin/includes/image.php';
 
-						update_option( 'wp_member_keeper_logo', $upload_id );
+					// Generate and save the attachment metas into the database
+					wp_update_attachment_metadata( $upload_id, wp_generate_attachment_metadata( $upload_id, $new_file_path ) );
 
-					}
+					if ( $current_logo_id !== $upload_id ) :
+						wp_delete_attachment( $current_logo_id, true );
+						$current_logo_id = $upload_id;
+					endif;
+
+					update_option( 'wp_member_keeper_logo', $upload_id );
+
+				}
 
 				endif;
 			?>
 			<img src="<?php echo esc_url( wp_get_attachment_image_src( $current_logo_id, 'thumbnail', false )[0] ); ?>" srcset="<?php echo wp_get_attachment_image_srcset( $current_logo_id, 'medium', null ); ?>">
 			<?php
-				if ( empty( $current_logo_id ) ) : ?>
+			if ( empty( $current_logo_id ) ) :
+				?>
 					
 					<form method="post" enctype="multipart/form-data">
 						<?php wp_nonce_field( 'wpmk_logo_form', '_wpmk_nonce', true, true ); ?>
@@ -90,7 +98,8 @@ defined( 'WPINC' ) || exit;
 						<input type="submit" id="logo-submit" name="logo-submit">
 					</form>
 
-			<?php endif; 
+				<?php
+			endif;
 			?>
 		</div>
 		<div class="header-title-container">
@@ -100,11 +109,11 @@ defined( 'WPINC' ) || exit;
 	<section class="wpmk-fields-container">
 		<div class="tab-row">
 			<ul class="tab-list">
-				<li class="tab-item add-member active" data-target="add-member">
-					<h5>Add Member</h5>
-				</li>
-				<li class="tab-item member-list" data-target="member-list">
+				<li class="tab-item member-list active" data-target="member-list">
 					<h5>Members List</h5>
+				</li>
+				<li class="tab-item add-member" data-target="add-member">
+					<h5>Add Member</h5>
 				</li>
 				<li class="tab-item edit-member disabled" disabled data-target="edit-member">
 					<h5>Edit Member</h5>
@@ -113,7 +122,67 @@ defined( 'WPINC' ) || exit;
 		</div>
 		<div class="tab-content-wrap">
 			<!-- tab-content -->
-			<div class="tab-content active" data-content="add-member">
+			<div class="tab-content active" data-content="member-list">
+				<?php
+				if ( ! empty( $results ) ) :
+					?>
+						<div class="table-responsive">
+						<table class="member-table" data-security="<?php echo wp_create_nonce( '_wpmk_member_table' ); ?>">
+							<thead>
+								<tr>
+									<th>
+										<h3>Family ID</h3>
+									</th>
+									<th>
+										<h3>First Name</h3>
+									</th>
+									<th>
+										<h3>Last Name</h3>
+									</th>
+									<th>
+										<h3>Phone #</h3>
+									</th>
+									<th>
+										<h3>Email</h3>
+									</th>
+									<th>
+										<h3>Ministries</h3>
+									</th>
+									<th>
+										<h3>Manage</h3>
+									</th>
+								</tr>
+							</thead>         
+							<tbody>
+								
+					<?php
+					foreach ( $results as $member ) :
+						$family_id = ( 0 == $member->family_id ) ? $member->id : $member->family_id;
+						?>
+								<tr>
+									<td><?php echo esc_html( $family_id ); ?></td>
+									<td><?php echo esc_html( $member->first_name ); ?></td>
+									<td><?php echo esc_html( $member->last_name ); ?></td>
+									<td><?php echo esc_html( $member->phone ); ?></td>
+									<td><?php echo esc_html( $member->email ); ?></td>
+									<td><?php echo esc_html( $member->ministries ); ?></td>
+									<td><i data-member="<?php echo esc_html( $member->id ); ?>" class="edit">edit</i> <i data-member="<?php echo esc_html( $member->id ); ?>" class="remove">remove</i></td>
+								</tr>
+					<?php endforeach; ?>
+						
+							</tbody>      
+						</table>
+
+						</div>
+				<?php else : ?>
+						<span>Currently there are no members in the keeper!</span>
+
+				<?php endif; ?>
+			</div>
+			<!-- end-tab-content -->
+
+			<!-- tab-content -->
+			<div class="tab-content" data-content="add-member">
 				<form class="add-member-form" method="post" enctype="multipart/form-data">
 					<div class="input-group">
 						<div class="prepend-wrap">
@@ -177,64 +246,6 @@ defined( 'WPINC' ) || exit;
 						<input type="submit" id="add_member_submit" name="add_member_submit" role="add">
 					</div>
 				</form>
-			</div>
-			<!-- end-tab-content -->
-
-			<!-- tab-content -->
-			<div class="tab-content" data-content="member-list">
-				<?php 
-					if ( !empty( $results ) ) : ?>
-						<div class="table-responsive">
-						<table class="member-table" data-security="<?php echo wp_create_nonce( '_wpmk_member_table' ); ?>">
-                        	<thead>
-                        		<tr>
-	                        		<th>
-	                        			<h3>Family ID</h3>
-	                        		</th>
-	                        		<th>
-	                        			<h3>First Name</h3>
-	                        		</th>
-	                        		<th>
-	                        			<h3>Last Name</h3>
-	                        		</th>
-	                        		<th>
-	                        			<h3>Phone #</h3>
-	                        		</th>
-	                        		<th>
-	                        			<h3>Email</h3>
-	                        		</th>
-	                        		<th>
-	                        			<h3>Ministries</h3>
-	                        		</th>
-	                        		<th>
-	                        			<h3>Manage</h3>
-	                        		</th>
-                        		</tr>
-                        	</thead>         
-                        	<tbody>
-                        		
-				<?php foreach( $results as $member ) : 
-					$family_id = ( 0 == $member->family_id ) ? $member->id: $member->family_id;
-					?>
-								<tr>
-									<td><?php echo esc_html( $family_id ); ?></td>
-									<td><?php echo esc_html( $member->first_name ); ?></td>
-									<td><?php echo esc_html( $member->last_name ); ?></td>
-									<td><?php echo esc_html( $member->phone ); ?></td>
-									<td><?php echo esc_html( $member->email ); ?></td>
-									<td><?php echo esc_html( $member->ministries ); ?></td>
-									<td><i data-member="<?php echo esc_html( $member->id ); ?>" class="edit">edit</i> <i data-member="<?php echo esc_html( $member->id ); ?>" class="remove">remove</i></td>
-								</tr>
-				<?php endforeach; ?>
-						
-                        	</tbody>      
-						</table>
-
-						</div>
-				<?php else : ?>
-						<span>Currently there are no members in the keeper!</span>
-
-				<?php endif; ?>
 			</div>
 			<!-- end-tab-content -->
 			

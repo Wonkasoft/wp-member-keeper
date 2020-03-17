@@ -58,24 +58,34 @@
 				       				input.value = '';
 				       			}
 				       		});
-				       		members_interface.member_tbody.innerHTML = '';
-					        var new_member_tbody = '';
+				       		if ( members_interface.member_tbody ) {
 
-					        response.data.data.forEach( function( member, i ) {
-					        	var family_id = ( 0 == member.family_id ) ? member.id: member.family_id;
-								new_member_tbody += '<tr>';
-								new_member_tbody += '<td>' + family_id + '</td>';
-								new_member_tbody += '<td>' + member.first_name + '</td>';
-								new_member_tbody += '<td>' + member.last_name + '</td>';
-								new_member_tbody += '<td>' + member.phone + '</td>';
-								new_member_tbody += '<td>' + member.email + '</td>';
-								new_member_tbody += '<td>' + member.ministries + '</td>';
-								new_member_tbody += '<td><i data-member="' + member.id + '" class="edit">edit</i> <i data-member="' + member.id + '" class="remove">remove</i></td>';
-								new_member_tbody += '</tr>';
-					        });
+					       		members_interface.member_tbody.innerHTML = '';
+						        var new_member_tbody = '';
 
-					        members_interface.member_tbody.innerHTML = new_member_tbody;
-					        members_interface.member_manage();
+						        response.data.data.forEach( function( member, i ) {
+						        	var family_id = ( 0 == member.family_id ) ? member.id: member.family_id;
+									new_member_tbody += '<tr>';
+									new_member_tbody += '<td>' + family_id + '</td>';
+									new_member_tbody += '<td>' + member.first_name + '</td>';
+									new_member_tbody += '<td>' + member.last_name + '</td>';
+									new_member_tbody += '<td>' + member.phone + '</td>';
+									new_member_tbody += '<td>' + member.email + '</td>';
+									new_member_tbody += '<td>' + member.ministries + '</td>';
+									new_member_tbody += '<td><i data-member="' + member.id + '" class="edit">edit</i> <i data-member="' + member.id + '" class="remove">remove</i></td>';
+									new_member_tbody += '</tr>';
+						        });
+
+						        members_interface.member_tbody.innerHTML = new_member_tbody;
+						        members_interface.member_manage();
+				       		} else {
+				       			location.reload();
+				       		}
+
+				        	if ( 'add' === current_form ) {
+					        	members_interface.tab_list.click();
+				        	}
+
 					        if ( 'edit' === current_form ) {
 					        	members_interface.tab_list.click();
 					        	members_interface.tab_edit.classList.add( 'disabled' );
