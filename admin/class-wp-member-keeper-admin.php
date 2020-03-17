@@ -157,6 +157,11 @@ class Wp_Member_Keeper_Admin {
 		include plugin_dir_path( __FILE__ ) . 'partials/wp-member-keeper-admin-display.php';
 	}
 
+	/**
+	 * This function filters the links on the left side of the plugins page in admin menu.
+	 * @param  array $links contains the links.
+	 * @return array        returns the filtered links.
+	 */
 	public function wp_member_keeper_add_settings_link_filter( $links ) { 
 		$links_addon = '<a href="' . menu_page_url( WONKASOFT_PLUGIN_ADMIN_PAGE, 0 ) . '" target="_self">Settings</a>';
 		array_unshift($links, $links_addon);
@@ -165,6 +170,12 @@ class Wp_Member_Keeper_Admin {
 	 return $links; 
 	}
 
+	/**
+	 * This function filters the links on the right side of the plugins page in admin menu.
+	 * @param  array $links contains the links under the description.
+	 * @param  string $file  contains the file name of the plugin.
+	 * @return array        returns the filtered links.
+	 */
 	public function wp_member_keeper_add_description_link_filter( $links, $file ) {
 		if ( strpos($file, 'wp-member-keeper.php') !== false ) {
 			$links[] = '<a href="' . menu_page_url( WONKASOFT_PLUGIN_ADMIN_PAGE, 0 ) . '" target="_self">Settings</a>';
@@ -174,4 +185,228 @@ class Wp_Member_Keeper_Admin {
 	 return $links; 
 	}
 
+	/**
+	 * This function adds new members to the keeper via ajax
+	 */
+	public function add_member_to_keeper() {
+			
+		wp_verify_nonce( stripslashes( $_POST['_wpmk_nonce'] ), 'wpmk_add_member_form' ) || die ( 'Busted!');
+		
+		global $wpdb;
+
+		$info = array();
+
+		foreach( $_POST as $key => $value ) :
+			if ( 'family_id' === $key ) :
+				$info[$key] = ( ! empty( $value ) ) ? stripslashes( $value ): 0;
+			else:
+				$info[$key] = ( ! empty( $value ) ) ? stripslashes( $value ): '';
+			endif; 
+		endforeach;
+
+		$info['last_modified'] = new DateTime( null, new DateTimeZone('AMERICA/Denver'));
+		$info['last_modified'] = $info['last_modified']->format('Y-m-d H:i:s');
+			
+
+		$info = json_decode( json_encode( $info ) );
+
+		$table_name = $wpdb->prefix . str_replace( ' ', '_', str_replace( 'wp ', '', strtolower( WP_MEMBER_KEEPER_NAME ) ) );
+
+		$results = $wpdb->get_results( "SELECT * FROM $table_name WHERE first_name = '$info->first_name' AND last_name = '$info->last_name'", OBJECT);
+		
+		$return = array(
+			'msg' => 'Member already exits',
+			'data' => $results,
+		);
+		if ( empty( $results ) ) :
+			$results = $wpdb->query(
+			   $wpdb->prepare(
+			   "
+			   INSERT INTO $table_name
+			   ( last_modified, first_name, last_name, street_address, city, state, zip, phone, email, birth_date, ministries, family_id )
+			   VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d )
+			   ",
+			   array(
+			         $info->last_modified,
+			         $info->first_name,
+			         $info->last_name,
+			         $info->street_address,
+			         $info->city,
+			         $info->state,
+			         $info->zip,
+			         $info->phone,
+			         $info->email,
+			         $info->birth_date,
+			         $info->ministries,
+			         $info->family_id,
+			      )
+			   )
+			);
+
+			if ( $results ) :
+				$results = $wpdb->get_results( "SELECT * FROM $table_name", OBJECT);
+				$return = array(
+					'msg' => 'Member was recorded. Here is all members.',
+					'data' => $results,
+				);
+			else:
+				$return = array(
+					'msg' => 'Error trying to record member.',
+					'data' => $results,
+				);
+			endif; 
+			 
+		endif; 
+
+		return wp_send_json_success( $return, 200 );
+	}
+
+	/**
+	 * This function is the ajax request that allows for member edits.
+	 */
+	public function edit_member_to_keeper() {
+
+		wp_verify_nonce( stripslashes( $_POST['_wpmk_edit_nonce'] ), 'wpmk_edit_member_form' ) || die ( 'Busted!');
+		
+		global $wpdb;
+
+		$fields = array(
+			'id',
+			'first_name',
+			'last_name',
+			'email',
+			'phone',
+			'street_address',
+			'city',
+			'zip',
+			'birth_date',
+			'family_id',
+			'ministries',
+		);
+		$info = array();
+
+		foreach( $_POST as $key => $value ) :
+			if ( 'family_id' === $key ) :
+				$info[$key] = ( ! empty( $value ) ) ? stripslashes( $value ): stripslashes( $_POST['id'] );
+			else:
+				if ( in_array( $key, $fields ) ) :
+					$info[$key] = ( ! empty( $value ) ) ? stripslashes( $value ): '';
+				endif; 
+			endif; 
+		endforeach;
+
+		$info['last_modified'] = new DateTime( null, new DateTimeZone('AMERICA/Denver'));
+		$info['last_modified'] = $info['last_modified']->format('Y-m-d H:i:s');
+		$info['state'] = 'CA';
+			
+		$where = array(
+			'id' => $info['id'],
+		);
+
+		$format = array(
+			'%s',
+			'%s',
+			'%s',
+			'%s',
+			'%s',
+			'%s',
+			'%d',
+			'%s',
+			'%d',
+			'%s',
+			'%s',
+		);	
+
+		$table_name = $wpdb->prefix . str_replace( ' ', '_', str_replace( 'wp ', '', strtolower( WP_MEMBER_KEEPER_NAME ) ) );
+
+		$results = $wpdb->update(
+			$table_name, 
+			$info, 
+			$where,
+			$format, 
+		);
+
+		if ( $results ) :
+			$results = $wpdb->get_results( "SELECT * FROM $table_name", OBJECT);
+			$return = array(
+				'msg' => 'Member was recorded. Here is all members.',
+				'data' => $results,
+			);
+		else:
+			$return = array(
+				'msg' => 'Error trying to record member.',
+				'data' => $results,
+			);
+		endif;
+
+		return wp_send_json_success( $return, 200 );
+	}
+
+	/**
+	 * This function is the ajax request that gets member info.
+	 */
+	public function get_member_from_keeper() {
+
+		wp_verify_nonce( stripslashes( $_GET['_wpmk_member_table'] ), '_wpmk_member_table' ) || die ( 'Busted!');
+
+		global $wpdb;
+
+		$member_id = ( isset( $_GET['member_id'] ) ) ? stripslashes( $_GET['member_id'] ): 0;
+
+		$table_name = $wpdb->prefix . str_replace( ' ', '_', str_replace( 'wp ', '', strtolower( WP_MEMBER_KEEPER_NAME ) ) );
+
+		$results = $wpdb->get_results( "SELECT * FROM $table_name WHERE id = '$member_id'", OBJECT);
+		
+		if ( ! empty( $results ) ) :
+			$return = array(
+				'msg' => 'Members info retrived.',
+				'data' => $results,
+			);
+		else:
+			$return = array(
+				'msg' => 'No Member found by that ID.',
+				'data' => 'none members found.',
+			);
+		endif; 
+
+		return wp_send_json_success( $return, 200 );
+	}
+
+	/**
+	 * This function is the ajax request that deletes member info.
+	 */
+	public function delete_member_from_keeper() {
+
+		wp_verify_nonce( stripslashes( $_POST['_wpmk_member_table'] ), '_wpmk_member_table' ) || die ( 'Busted!');
+
+		global $wpdb;
+
+		$member_id = ( isset( $_POST['member_id'] ) ) ? stripslashes( $_POST['member_id'] ): 0;
+
+		$where = array(
+			'id' => $member_id,
+		);
+
+		$table_name = $wpdb->prefix . str_replace( ' ', '_', str_replace( 'wp ', '', strtolower( WP_MEMBER_KEEPER_NAME ) ) );
+
+		$results = $wpdb->delete( 
+			$table_name, 
+			$where, 
+		);
+		
+		if ( ! empty( $results ) ) :
+			$results = $wpdb->get_results( "SELECT * FROM $table_name", OBJECT);
+			$return = array(
+				'msg' => 'Member info deleted.',
+				'data' => $results,
+			);
+		else:
+			$return = array(
+				'msg' => 'Error deleting member.',
+				'data' => $results,
+			);
+		endif; 
+
+		return wp_send_json_success( $return, 200 );
+	}
 }

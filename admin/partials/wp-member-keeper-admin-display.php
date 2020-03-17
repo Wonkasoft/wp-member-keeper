@@ -86,6 +86,7 @@ $results = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM ' . $table_name ) 
 				if ( empty( $current_logo_id ) ) : ?>
 					
 					<form method="post" enctype="multipart/form-data">
+						<?php wp_nonce_field( 'wpmk_logo_form', '_wpmk_nonce', true, true ); ?>
 						<input type="file" id="logo-img" name="logo-img" accept="image/*.[jpeg|jpg|png|gif]">
 						<input type="submit" id="logo-submit" name="logo-submit">
 					</form>
@@ -100,11 +101,11 @@ $results = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM ' . $table_name ) 
 	<section class="wpmk-fields-container">
 		<div class="tab-row">
 			<ul class="tab-list">
-				<li class="tab-item member-list active" data-target="member-list">
-					<h5>Member List</h5>
-				</li>
-				<li class="tab-item add-member" data-target="add-member">
+				<li class="tab-item add-member active" data-target="add-member">
 					<h5>Add Member</h5>
+				</li>
+				<li class="tab-item member-list" data-target="member-list">
+					<h5>Members List</h5>
 				</li>
 				<li class="tab-item edit-member disabled" disabled data-target="edit-member">
 					<h5>Edit Member</h5>
@@ -112,67 +113,199 @@ $results = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM ' . $table_name ) 
 			</ul>
 		</div>
 		<div class="tab-content-wrap">
-			<div class="tab-content active" data-content="member-list">
+			<!-- tab-content -->
+			<div class="tab-content active" data-content="add-member">
+				<form class="add-member-form" method="post" enctype="multipart/form-data">
+					<div class="input-group">
+						<div class="prepend-wrap">
+							<span class="prepend-label">First Name*</span>
+							<input type="text" class="member-field-inputs" id="first_name" name="first_name" required>
+						</div>
+						<div class="prepend-wrap">
+							<span class="prepend-label">Last Name*</span>
+							<input type="text" class="member-field-inputs" id="last_name" name="last_name" required>
+						</div>
+					</div>
+					<div class="input-group">
+						<div class="prepend-wrap">
+							<span class="prepend-label">Email*</span>
+							<input type="email" class="member-field-inputs" id="email" name="email" required>
+						</div>
+						<div class="prepend-wrap">
+							<span class="prepend-label">Phone #</span>
+							<input type="tel" class="member-field-inputs" id="phone_number" name="phone_number">
+						</div>
+					</div>
+					<div class="input-group">
+						<div class="prepend-wrap">
+							<span class="prepend-label">Street Address</span>
+							<input type="text" class="member-field-inputs" id="street_address" name="street_address">
+						</div>
+					</div>
+					<div class="input-group">
+						<div class="prepend-wrap">
+							<span class="prepend-label">City</span>
+							<input type="text" class="member-field-inputs" id="city" name="city">
+						</div>
+						<div class="prepend-wrap">
+							<span class="prepend-label">State</span>
+							<input type="text" class="member-field-inputs" id="state" name="state" disabled value="CA">
+						</div>
+						<div class="prepend-wrap">
+							<span class="prepend-label">Zip Code</span>
+							<input type="text" class="member-field-inputs" id="zip_code" name="zip_code">
+						</div>
+					</div>
+					<div class="input-group">
+						<div class="prepend-wrap">
+							<span class="prepend-label">Birthday</span>
+							<input type="date" class="member-field-inputs" id="birth_date" name="birth_date">
+						</div>
+						<div class="prepend-wrap">
+							<span class="prepend-label">Family ID</span>
+							<input type="number" class="member-field-inputs" id="family_id" name="family_id">
+						</div>
+					</div>
+					<div class="input-group">
+						<div class="prepend-wrap">
+							<span class="prepend-label">Ministries</span>
+							<input type="text" class="member-field-inputs" id="ministries" name="ministries">
+						</div>
+					</div>
+					<input type="hidden" name="member_form" value="add">
+					<?php wp_nonce_field( 'wpmk_add_member_form', '_wpmk_nonce', true, true ); ?>
+					<div class="input-group">
+						<input type="submit" id="add_member_submit" name="add_member_submit" role="add">
+					</div>
+				</form>
+			</div>
+			<!-- end-tab-content -->
+
+			<!-- tab-content -->
+			<div class="tab-content" data-content="member-list">
 				<?php 
 					if ( !empty( $results ) ) : ?>
-						<table>
+						<div class="table-responsive">
+						<table class="member-table" data-security="<?php echo wp_create_nonce( '_wpmk_member_table' ); ?>">
                         	<thead>
                         		<tr>
 	                        		<th>
-	                        			<input type="checkbox" name="check-all">
+	                        			<h3>Family ID</h3>
 	                        		</th>
 	                        		<th>
-	                        			<h6>First Name</h6>
+	                        			<h3>First Name</h3>
 	                        		</th>
 	                        		<th>
-	                        			<h6>Last Name</h6>
+	                        			<h3>Last Name</h3>
 	                        		</th>
 	                        		<th>
-	                        			<h6>Phone #</h6>
+	                        			<h3>Phone #</h3>
 	                        		</th>
 	                        		<th>
-	                        			<h6>Email</h6>
+	                        			<h3>Email</h3>
+	                        		</th>
+	                        		<th>
+	                        			<h3>Ministries</h3>
+	                        		</th>
+	                        		<th>
+	                        			<h3>Manage</h3>
 	                        		</th>
                         		</tr>
                         	</thead>         
                         	<tbody>
                         		
-				<?php foreach( $results as $member ) : ?>
+				<?php foreach( $results as $member ) : 
+					$family_id = ( 0 == $member->family_id ) ? $member->id: $member->family_id;
+					?>
 								<tr>
-									<td><input type="checkbox" name="member_<?php echo esc_html( $member['id'] ); ?>"></td>
-									<td><?php echo esc_html( $member['first_name'] ); ?></td>
-									<td><?php echo esc_html( $member['last_name'] ); ?></td>
-									<td><?php echo esc_html( $member['phone'] ); ?></td>
-									<td><?php echo esc_html( $member['email'] ); ?></td>
+									<td><?php echo esc_html( $family_id ); ?></td>
+									<td><?php echo esc_html( $member->first_name ); ?></td>
+									<td><?php echo esc_html( $member->last_name ); ?></td>
+									<td><?php echo esc_html( $member->phone ); ?></td>
+									<td><?php echo esc_html( $member->email ); ?></td>
+									<td><?php echo esc_html( $member->ministries ); ?></td>
+									<td><i data-member="<?php echo esc_html( $member->id ); ?>" class="edit">edit</i> <i data-member="<?php echo esc_html( $member->id ); ?>" class="remove">remove</i></td>
 								</tr>
 				<?php endforeach; ?>
 						
                         	</tbody>      
 						</table>
 
+						</div>
 				<?php else : ?>
 						<span>Currently there are no members in the keeper!</span>
 
 				<?php endif; ?>
 			</div>
-			<div class="tab-content" data-content="add-member">
-				<form method="post" enctype="multipart/form-data">
+			<!-- end-tab-content -->
+			
+			<!-- tab-content -->
+			<div class="tab-content" data-content="edit-member">
+				<form class="edit-member-form" method="post" enctype="multipart/form-data">
 					<div class="input-group">
 						<div class="prepend-wrap">
-							<span class="prepend-label">First Name</span>
-							<input type="text" class="member-field-inputs" id="first_name" name="first_name">
+							<span class="prepend-label">First Name*</span>
+							<input type="text" class="member-field-inputs" id="edit_first_name" name="first_name" required>
 						</div>
 						<div class="prepend-wrap">
-							<span class="prepend-label">Last Name</span>
-							<input type="text" class="member-field-inputs" id="last_name" name="last_name">
+							<span class="prepend-label">Last Name*</span>
+							<input type="text" class="member-field-inputs" id="edit_last_name" name="last_name" required>
 						</div>
 					</div>
 					<div class="input-group">
+						<div class="prepend-wrap">
+							<span class="prepend-label">Email*</span>
+							<input type="email" class="member-field-inputs" id="edit_email" name="email" required>
+						</div>
+						<div class="prepend-wrap">
+							<span class="prepend-label">Phone #</span>
+							<input type="tel" class="member-field-inputs" id="edit_phone_number" name="phone_number">
+						</div>
 					</div>
-					<input type="submit" name="add_member_submit">
+					<div class="input-group">
+						<div class="prepend-wrap">
+							<span class="prepend-label">Street Address</span>
+							<input type="text" class="member-field-inputs" id="edit_street_address" name="street_address">
+						</div>
+					</div>
+					<div class="input-group">
+						<div class="prepend-wrap">
+							<span class="prepend-label">City</span>
+							<input type="text" class="member-field-inputs" id="edit_city" name="city">
+						</div>
+						<div class="prepend-wrap">
+							<span class="prepend-label">State</span>
+							<input type="text" class="member-field-inputs" id="edit_state" name="state" disabled value="CA">
+						</div>
+						<div class="prepend-wrap">
+							<span class="prepend-label">Zip Code</span>
+							<input type="text" class="member-field-inputs" id="edit_zip_code" name="zip_code">
+						</div>
+					</div>
+					<div class="input-group">
+						<div class="prepend-wrap">
+							<span class="prepend-label">Birthday</span>
+							<input type="date" class="member-field-inputs" id="edit_birth_date" name="birth_date">
+						</div>
+						<div class="prepend-wrap">
+							<span class="prepend-label">Family ID</span>
+							<input type="number" class="member-field-inputs" id="edit_family_id" name="family_id">
+						</div>
+					</div>
+					<div class="input-group">
+						<div class="prepend-wrap">
+							<span class="prepend-label">Ministries</span>
+							<input type="text" class="member-field-inputs" id="edit_ministries" name="ministries">
+						</div>
+					</div>
+					<input type="hidden" name="id">
+					<input type="hidden" name="member_form" value="edit">
+					<?php wp_nonce_field( 'wpmk_edit_member_form', '_wpmk_edit_nonce', true, true ); ?>
+					<div class="input-group">
+						<input type="submit" id="edit_member_submit" name="edit_member_submit" role="edit">
+					</div>
 				</form>
 			</div>
-			<div class="tab-content" data-content="edit-member"></div>
 		</div>
 	</section>
 </div>
