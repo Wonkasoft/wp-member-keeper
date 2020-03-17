@@ -15,7 +15,7 @@
  * @wordpress-plugin
  * Plugin Name:       WP Member Keeper
  * Plugin URI:        https://wonkasoft.com/wp-member-keeper/
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       This plugin is to record member information into the sites database.
  * Version:           1.0.0
  * Author:            Wonkasoft, LLC
  * Author URI:        https://wonkasoft.com/
@@ -66,9 +66,6 @@ register_deactivation_hook( __FILE__, 'deactivate_wp_member_keeper' );
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-wp-member-keeper.php';
 
-if ( get_option( 'wp_member_keeper_database_version' ) !== WP_MEMBER_KEEPER_VERSION ) :
-	activate_wp_member_keeper();
-endif; 
 /**
  * Begins execution of the plugin.
  *
@@ -85,3 +82,7 @@ function run_wp_member_keeper() {
 
 }
 run_wp_member_keeper();
+
+if ( get_option( 'wp_member_keeper_database_version' ) !== WP_MEMBER_KEEPER_VERSION ) :
+	activate_wp_member_keeper();
+endif; 
