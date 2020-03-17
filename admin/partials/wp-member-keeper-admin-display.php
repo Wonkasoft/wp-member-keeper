@@ -93,7 +93,7 @@ defined( 'WPINC' ) || exit;
 				?>
 					
 					<form method="post" enctype="multipart/form-data">
-						<?php wp_nonce_field( 'wpmk_logo_form', '_wpmk_nonce', true, true ); ?>
+						<?php wp_nonce_field( 'wpmk_logo_form', '_wpmk_logo_nonce', true, true ); ?>
 						<input type="file" id="logo-img" name="logo-img" accept="image/*.[jpeg|jpg|png|gif]">
 						<input type="submit" id="logo-submit" name="logo-submit">
 					</form>
