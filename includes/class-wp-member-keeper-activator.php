@@ -32,9 +32,9 @@ class Wp_Member_Keeper_Activator {
 
 		global $wpdb;
 
-		$charset_collate = trim( $wpdb->get_charset_collate() );
+		$charset_collate = $wpdb->get_charset_collate();
 
-		$table_name = $wpdb->prefix . 'member_keeper';
+		$table_name = $wpdb->prefix . str_replace( ' ', '_', str_replace( 'wp ', '', strtolower( WP_MEMBER_KEEPER_NAME ) ) );
 
 			$sql = "CREATE TABLE IF NOT EXISTS `{$table_name}` (
 				id INT(10) NOT NULL AUTO_INCREMENT,
@@ -51,7 +51,7 @@ class Wp_Member_Keeper_Activator {
 				birth_date DATE NULL,
 				ministries VARCHAR(150) NULL,
 				family_id INT(10) NULL,
-				PRIMARY KEY (id) )$charset_collate;";
+				PRIMARY KEY (id) ) $charset_collate;";
 
 			require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
