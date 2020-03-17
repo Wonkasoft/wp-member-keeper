@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The file that defines the core plugin class
  *
@@ -154,6 +153,8 @@ class Wp_Member_Keeper {
 
 		$plugin_admin = new Wp_Member_Keeper_Admin( $this->get_plugin_name(), $this->get_version() );
 
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'wp_member_keeper_admin_display' );
 		$this->loader->add_filter( 'plugin_action_links_'. WP_MEMBER_KEEPER_BASENAME, $plugin_admin, 'wp_member_keeper_add_settings_link_filter' , 10, 1);
 		$this->loader->add_filter( 'plugin_row_meta', $plugin_admin, 'wp_member_keeper_add_description_link_filter', 10, 2);
@@ -161,8 +162,6 @@ class Wp_Member_Keeper {
 		$this->loader->add_action( 'wp_ajax_edit_member_to_keeper', $plugin_admin, 'edit_member_to_keeper' );
 		$this->loader->add_action( 'wp_ajax_get_member_from_keeper', $plugin_admin, 'get_member_from_keeper' );
 		$this->loader->add_action( 'wp_ajax_delete_member_from_keeper', $plugin_admin, 'delete_member_from_keeper' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
 	}
 

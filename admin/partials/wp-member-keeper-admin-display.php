@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Provide a admin area view for the plugin
  *
@@ -13,10 +12,6 @@
  */
 
 defined( 'WPINC' ) || exit;
-
-global $wpdb;
-$table_name = $wpdb->prefix . str_replace( ' ', '_', str_replace( 'wp ', '', strtolower( WP_MEMBER_KEEPER_NAME ) ) );
-$results = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM ' . $table_name ) );
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
@@ -24,6 +19,10 @@ $results = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM ' . $table_name ) 
 	<section class="wpmk-header-section">
 		<div class="logo-container">
 			<?php
+
+				global $wpdb;
+				$table_name = $wpdb->prefix . str_replace( ' ', '_', str_replace( 'wp ', '', strtolower( WP_MEMBER_KEEPER_NAME ) ) );
+				$results = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM ' . $table_name ) );
 				
 				$current_logo_id = get_option( 'wp_member_keeper_logo' );
 					

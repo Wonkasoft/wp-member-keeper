@@ -151,7 +151,6 @@
 				    if (this.readyState == 4 && this.status == 200) {
 				       // Typical action to be performed when the document is ready:
 				       var response = JSON.parse( members_interface.xhr.responseText );
-				       console.log( response );
 				       if ( '' != response.data.data ) {
 				       		members_interface.member_tbody.innerHTML = '';
 					        var new_member_tbody = '';

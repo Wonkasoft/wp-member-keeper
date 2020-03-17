@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The plugin bootstrap file
  *
@@ -57,8 +56,8 @@ function deactivate_wp_member_keeper() {
 	Wp_Member_Keeper_Deactivator::deactivate();
 }
 
-register_activation_hook( __FILE__, 'activate_wp_member_keeper' );
-register_deactivation_hook( __FILE__, 'deactivate_wp_member_keeper' );
+register_activation_hook(__FILE__, 'activate_wp_member_keeper' );
+register_deactivation_hook(__FILE__, 'deactivate_wp_member_keeper' );
 
 /**
  * The core plugin class that is used to define internationalization,
@@ -82,7 +81,3 @@ function run_wp_member_keeper() {
 
 }
 run_wp_member_keeper();
-
-if ( get_option( 'wp_member_keeper_database_version' ) !== WP_MEMBER_KEEPER_VERSION ) :
-	activate_wp_member_keeper();
-endif; 

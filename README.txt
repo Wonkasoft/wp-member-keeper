@@ -1,9 +1,9 @@
 === Plugin Name ===
-Contributors: (this should be a list of wordpress.org userid's)
-Donate link: https://wonkasoft.com/
-Tags: comments, spam
+Contributors: MrLister1, llister
+Donate link: https://paypal.me/Wonkasoft
+Tags: custom records, members,
 Requires at least: 3.0.1
-Tested up to: 3.4
+Tested up to: 5.3
 Stable tag: 4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
