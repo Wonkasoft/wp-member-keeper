@@ -256,15 +256,15 @@ class Wp_Member_Keeper_Admin {
 						$info->last_modified,
 						$info->first_name,
 						$info->last_name,
+						$info->email,
+						$info->phone,
 						$info->street_address,
 						$info->city,
 						$info->state,
 						$info->zip_code,
-						$info->phone,
-						$info->email,
 						$info->birth_date,
-						$info->ministries,
 						$info->family_id,
+						$info->ministries,
 					)
 				)
 			);
