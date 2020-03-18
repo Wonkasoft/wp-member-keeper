@@ -224,7 +224,7 @@ class Wp_Member_Keeper_Admin {
 				$wpdb->prepare(
 					"
 			   INSERT INTO $table_name
-			   ( last_modified, first_name, last_name, street_address, city, state, zip, phone, email, birth_date, ministries, family_id )
+			   ( last_modified, first_name, last_name, street_address, city, state, zip_code, phone, email, birth_date, ministries, family_id )
 			   VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d )
 			   ",
 					array(
