@@ -201,7 +201,7 @@ defined( 'WPINC' ) || exit;
 						</div>
 						<div class="prepend-wrap">
 							<span class="prepend-label">Phone #</span>
-							<input type="tel" class="member-field-inputs" id="phone_number" name="phone_number">
+							<input type="tel" class="member-field-inputs" id="phone" name="phone">
 						</div>
 					</div>
 					<div class="input-group">
@@ -269,7 +269,7 @@ defined( 'WPINC' ) || exit;
 						</div>
 						<div class="prepend-wrap">
 							<span class="prepend-label">Phone #</span>
-							<input type="tel" class="member-field-inputs" id="edit_phone_number" name="phone_number">
+							<input type="tel" class="member-field-inputs" id="edit_phone" name="phone">
 						</div>
 					</div>
 					<div class="input-group">

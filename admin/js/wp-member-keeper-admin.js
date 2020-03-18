@@ -44,7 +44,15 @@
 					var value = input.value;
 
 					if ( 'add_member_submit' !== input.id && 'edit_member_submit' !== input.id && '' !== input.name ) {
-						data[key_name] = value;
+						if ( 'phone' == key_name ) {
+							var cleaned = ('' + value).replace(/\D/g, '');
+							var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+							if ( match ) {
+								data[key_name] = '(' + match[1] + ') ' + match[2] + '-' + match[3];
+							}
+						} else {
+							data[key_name] = value;
+						}
 					}
 				});
 				var query_string = Object.keys( data ).map( function( key ) { return key + '=' + data[key]; } ).join('&');

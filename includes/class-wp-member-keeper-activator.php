@@ -46,14 +46,14 @@ class Wp_Member_Keeper_Activator {
 				city VARCHAR(150) NULL,
 				state VARCHAR(50) NULL,
 				zip VARCHAR(10) NULL,
-				phone VARCHAR(10) NULL,
+				phone TEXT(15) NULL,
 				email VARCHAR(150) NULL,
 				birth_date DATE NULL,
 				ministries VARCHAR(150) NULL,
 				family_id INT(10) NULL,
 				PRIMARY KEY (id) ) $charset_collate;";
 
-			require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
 			dbDelta( $sql );
 

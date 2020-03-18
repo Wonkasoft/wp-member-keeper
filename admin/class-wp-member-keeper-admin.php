@@ -283,7 +283,8 @@ class Wp_Member_Keeper_Admin {
 			'family_id',
 			'ministries',
 		);
-		$info   = array();
+
+		$info = array();
 
 		foreach ( $_POST as $key => $value ) :
 			if ( 'family_id' === $key ) :
@@ -317,6 +318,10 @@ class Wp_Member_Keeper_Admin {
 			'%s',
 		);
 
+		$where_format = array(
+			'%d',
+		);
+
 		$table_name = $wpdb->prefix . str_replace( ' ', '_', str_replace( 'wp ', '', strtolower( WP_MEMBER_KEEPER_NAME ) ) );
 
 		$results = $wpdb->update(
@@ -324,6 +329,7 @@ class Wp_Member_Keeper_Admin {
 			$info,
 			$where,
 			$format,
+			$where_format,
 		);
 
 		if ( $results ) :
