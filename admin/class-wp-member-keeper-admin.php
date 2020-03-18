@@ -198,6 +198,9 @@ class Wp_Member_Keeper_Admin {
 
 		$info = array();
 
+		$info['last_modified'] = new DateTime( null, new DateTimeZone( 'America/Los_Angeles' ) );
+		$info['last_modified'] = $info['last_modified']->format( 'Y-m-d H:i:s' );
+
 		foreach ( $_POST as $key => $value ) :
 			if ( 'family_id' === $key ) :
 				$info[ $key ] = ( ! empty( $value ) ) ? wp_unslash( $value ) : 0;
@@ -205,9 +208,6 @@ class Wp_Member_Keeper_Admin {
 				$info[ $key ] = ( ! empty( $value ) ) ? wp_unslash( $value ) : '';
 			endif;
 		endforeach;
-
-		$info['last_modified'] = new DateTime( null, new DateTimeZone( 'America/Los_Angeles' ) );
-		$info['last_modified'] = $info['last_modified']->format( 'Y-m-d H:i:s' );
 
 		$info = json_decode( json_encode( $info ) );
 
@@ -223,9 +223,34 @@ class Wp_Member_Keeper_Admin {
 			$results = $wpdb->query(
 				$wpdb->prepare(
 					"
-			   INSERT INTO $table_name
-			   ( last_modified, first_name, last_name, street_address, city, state, zip_code, phone, email, birth_date, ministries, family_id )
-			   VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d )
+			   INSERT INTO $table_name ( 
+				   last_modified, 
+				   first_name, 
+				   last_name, 
+				   email, 
+				   phone, 
+				   street_address, 
+				   city, 
+				   state, 
+				   zip_code, 
+				   birth_date, 
+				   family_id, 
+				   ministries
+			   )
+			   VALUES ( 
+				   %s, 
+				   %s, 
+				   %s, 
+				   %s, 
+				   %s, 
+				   %s, 
+				   %s, 
+				   %s, 
+				   %s, 
+				   %s, 
+				   %d, 
+				   %s
+			   )
 			   ",
 					array(
 						$info->last_modified,
