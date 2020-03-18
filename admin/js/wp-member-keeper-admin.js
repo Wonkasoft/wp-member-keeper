@@ -207,7 +207,7 @@
 							members_interface.tab_edit.classList.remove( 'disabled' );
 							members_interface.tab_edit.removeAttribute( 'disabled' );
 							members_interface.tab_edit.click();
-						}, 300 );
+						}, 800 );
 					});
 				});
 				this.member_remove_btns.forEach( function( btn, i ) {
