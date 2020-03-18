@@ -206,7 +206,7 @@ class Wp_Member_Keeper_Admin {
 			endif;
 		endforeach;
 
-		$info['last_modified'] = new DateTime( null, new DateTimeZone( 'AMERICA/Los Angeles' ) );
+		$info['last_modified'] = new DateTime( null, new DateTimeZone( 'America/Los_Angeles' ) );
 		$info['last_modified'] = $info['last_modified']->format( 'Y-m-d H:i:s' );
 
 		$info = json_decode( json_encode( $info ) );
