@@ -47,11 +47,6 @@
 	max-width: 150px;
 }
 
-.wp-member-keeper-settings-page-wrap .wpmk-header-section .logo-container #logo-img,
-.wp-member-keeper-settings-page-wrap .wpmk-header-section .logo-container #logo-submit {
-	display: none;
-}
-
 .wp-member-keeper-settings-page-wrap .wpmk-header-section .header-title-container {
 	position: relative;
 	display: flex;
