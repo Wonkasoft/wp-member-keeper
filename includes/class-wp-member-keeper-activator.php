@@ -45,11 +45,11 @@ class Wp_Member_Keeper_Activator {
 				street_address VARCHAR(150) NULL,
 				city VARCHAR(150) NULL,
 				state VARCHAR(50) NULL,
-				zip VARCHAR(10) NULL,
-				phone TEXT(15) NULL,
+				zip_code VARCHAR(10) NULL,
+				phone TEXT NULL,
 				email VARCHAR(150) NULL,
 				birth_date DATE NULL,
-				ministries VARCHAR(150) NULL,
+				ministries TEXT NULL,
 				family_id INT(10) NULL,
 				PRIMARY KEY (id) ) $charset_collate;";
 

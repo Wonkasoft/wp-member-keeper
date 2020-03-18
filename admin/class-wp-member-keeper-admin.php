@@ -205,7 +205,7 @@ class Wp_Member_Keeper_Admin {
 			endif;
 		endforeach;
 
-		$info['last_modified'] = new DateTime( null, new DateTimeZone( 'AMERICA/Denver' ) );
+		$info['last_modified'] = new DateTime( null, new DateTimeZone( 'AMERICA/Los Angeles' ) );
 		$info['last_modified'] = $info['last_modified']->format( 'Y-m-d H:i:s' );
 
 		$info = json_decode( json_encode( $info ) );
@@ -233,7 +233,7 @@ class Wp_Member_Keeper_Admin {
 						$info->street_address,
 						$info->city,
 						$info->state,
-						$info->zip,
+						$info->zip_code,
 						$info->phone,
 						$info->email,
 						$info->birth_date,
@@ -278,7 +278,7 @@ class Wp_Member_Keeper_Admin {
 			'phone',
 			'street_address',
 			'city',
-			'zip',
+			'zip_code',
 			'birth_date',
 			'family_id',
 			'ministries',
