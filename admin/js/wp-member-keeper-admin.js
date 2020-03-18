@@ -215,7 +215,7 @@
 						var target = this;
 						var member_id = target.getAttribute( 'data-member' );
 						var confirm = window.confirm( "Are you sure you would like to delete this member?\n( WARNING THIS CANNOT BE UNDONE! )" );
-						if ( true == confirm ) {
+						if ( confirm ) {
 							members_interface.delete_member_info( member_id );
 						}
 					});

@@ -427,7 +427,7 @@ class Wp_Member_Keeper_Admin {
 		);
 
 		if ( ! empty( $results ) ) :
-			$results = $wpdb->get_results( 'SELECT * FROM $table_name', OBJECT );
+			$results = $wpdb->get_results( "SELECT * FROM $table_name", OBJECT );
 			$return  = array(
 				'msg'  => 'Member info deleted.',
 				'data' => $results,
