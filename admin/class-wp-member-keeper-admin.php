@@ -73,6 +73,7 @@ class Wp_Member_Keeper_Admin {
 		 */
 
 		if ( strpos( $page, WONKASOFT_PLUGIN_ADMIN_PAGE ) !== false ) :
+			wp_enqueue_style( 'fontawesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css', array(), '5.12.1', 'all' );
 			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/wp-member-keeper-admin.css', array(), $this->version, 'all' );
 		endif;
 

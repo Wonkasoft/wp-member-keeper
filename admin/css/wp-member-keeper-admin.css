@@ -2,6 +2,24 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+@font-face {
+	font-family: 'Font Awesome 5 Regular';
+	source: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/webfonts/fa-regular-400.woff');
+	font-weight: 400;
+}
+
+@font-face {
+	font-family: 'Font Awesome 5 Brands';
+	source: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/webfonts/fa-brands-400.woff');
+	font-weight: 400;
+}
+
+@font-face {
+	font-family: 'Font Awesome 5 Solid';
+	source: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/webfonts/fa-solid-900.woff');
+	font-weight: 900;
+}
+
 #wpbody {
 	position: relative;
 	max-width: 100%;
@@ -9,6 +27,11 @@
 
 .wp-member-keeper-settings-page-wrap * {
 	box-sizing: border-box;
+}
+
+.wp-member-keeper-settings-page-wrap *:not(i) {
+	font-family: Roboto;
+	line-height: 1.1;
 }
 
 .wp-member-keeper-settings-page-wrap {
@@ -20,13 +43,12 @@
 	display: inline-block;
 	margin: 15px auto;
 	padding: 8px 15px;
-	font-size: 1.3rem;
-	color: #ffffff;
+	font-size: 0.875rem;
 	border: none;
 	border-radius: 4px;
-	background: rgba(66, 75, 233, 0.6);
+	background: #fff72f;
 	text-transform: uppercase;
-	box-shadow: 0 1px 3px 0 rgba( 0,0,0,.5 );
+	box-shadow: 0 1px 3px 0 rgba( 0,0,0,.2 );
 }
 
 .wp-member-keeper-settings-page-wrap .wpmk-header-section {
@@ -169,9 +191,10 @@
 	justify-content: center;
 	flex: 0 0 auto;
 	height: 100%;
-	margin-right: -1px;
+	margin-right: -2px;
 	padding: 0 8px;
-	background: #9dc7f6;
+	color: #ffffff;
+	background: #b0aa00;
 	border-radius: 3px 0 0 3px;
 	border: 1px solid rgba( 0, 0, 0, 0.1 );
 }
@@ -244,8 +267,31 @@
 }
 
 .wpmk-fields-container .tab-content table tbody td i {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 	font-style: normal;
 	cursor: pointer;
+	width: 35px;
+	height: 30px;
+	color: #fff;
+	text-transform: uppercase;
+	font-weight: bold;
+	border-radius: 4px;
+	border: 1px solid rgba( 255,255,255, .3);
+	box-shadow: 0 1px 3px 0 rgba( 0,0,0,.7 );
+}
+
+.wpmk-fields-container .tab-content table tbody td i.edit {
+	background: green;
+}
+
+.wpmk-fields-container .tab-content table tbody td i.remove {
+	background: red;
+}
+
+.wpmk-fields-container .tab-content table tbody td i:not(:last-child) {
+	margin-right: 15px;
 }
 
 .wpmk-fields-container .tab-content table tbody tr:nth-child( even ) {

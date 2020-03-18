@@ -166,7 +166,7 @@ defined( 'WPINC' ) || exit;
 									<td><?php echo esc_html( $member->phone ); ?></td>
 									<td><?php echo esc_html( $member->email ); ?></td>
 									<td><?php echo esc_html( $member->ministries ); ?></td>
-									<td><i data-member="<?php echo esc_html( $member->id ); ?>" class="edit">edit</i> <i data-member="<?php echo esc_html( $member->id ); ?>" class="remove">remove</i></td>
+									<td><i data-member="<?php echo esc_html( $member->id ); ?>" class="fas fa-user-edit edit"></i> <i data-member="<?php echo esc_html( $member->id ); ?>" class="fas fa-trash-alt remove"></i></td>
 								</tr>
 					<?php endforeach; ?>
 						

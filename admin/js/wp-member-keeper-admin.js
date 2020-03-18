@@ -80,7 +80,7 @@
 									new_member_tbody += '<td>' + member.phone + '</td>';
 									new_member_tbody += '<td>' + member.email + '</td>';
 									new_member_tbody += '<td>' + member.ministries + '</td>';
-									new_member_tbody += '<td><i data-member="' + member.id + '" class="edit">edit</i> <i data-member="' + member.id + '" class="remove">remove</i></td>';
+									new_member_tbody += '<td><i data-member="' + member.id + '" class="fas fa-user-edit edit"></i> <i data-member="' + member.id + '" class="fas fa-trash-alt remove"></i></td>';
 									new_member_tbody += '</tr>';
 						        });
 
@@ -182,7 +182,7 @@
 								new_member_tbody += '<td>' + member.phone + '</td>';
 								new_member_tbody += '<td>' + member.email + '</td>';
 								new_member_tbody += '<td>' + member.ministries + '</td>';
-								new_member_tbody += '<td><i data-member="' + member.id + '" class="edit">edit</i> <i data-member="' + member.id + '" class="remove">remove</i></td>';
+								new_member_tbody += '<td><i data-member="' + member.id + '" class="fas fa-user-edit edit"></i> <i data-member="' + member.id + '" class="fas fa-trash-alt remove"></i></td>';
 								new_member_tbody += '</tr>';
 					        });
 
@@ -202,17 +202,22 @@
 					btn.addEventListener( 'click', function( e ) {
 						var target = this;
 						var member_id = target.getAttribute( 'data-member' );
-						members_interface.tab_edit.classList.remove( 'disabled' );
-						members_interface.tab_edit.removeAttribute( 'disabled' );
-						members_interface.tab_edit.click();
 						members_interface.get_member_info( member_id );
+						setTimeout( function() {
+							members_interface.tab_edit.classList.remove( 'disabled' );
+							members_interface.tab_edit.removeAttribute( 'disabled' );
+							members_interface.tab_edit.click();
+						}, 300 );
 					});
 				});
 				this.member_remove_btns.forEach( function( btn, i ) {
 					btn.addEventListener( 'click', function( e ) {
 						var target = this;
 						var member_id = target.getAttribute( 'data-member' );
-						members_interface.delete_member_info( member_id );
+						var confirm = window.confirm( "Are you sure you would like to delete this member?\n( WARNING THIS CANNOT BE UNDONE! )" );
+						if ( true == confirm ) {
+							members_interface.delete_member_info( member_id );
+						}
 					});
 				});
 			},
