@@ -261,6 +261,10 @@
 	font-size: 1.5vh;
 }
 
+.wpmk-fields-container .tab-content table thead h3 .download {
+	margin-left: 15px;
+}
+
 .wpmk-fields-container .tab-content table tbody td {
 	text-align: center;
 	padding: 8px;

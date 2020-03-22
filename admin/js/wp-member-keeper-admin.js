@@ -90,9 +90,9 @@
 				       			location.reload();
 				       		}
 
-				        	if ( 'add' === current_form ) {
+					        if ( 'add' === current_form ) {
 					        	members_interface.tab_list.click();
-				        	}
+					        }
 
 					        if ( 'edit' === current_form ) {
 					        	members_interface.tab_list.click();
@@ -188,6 +188,8 @@
 
 					        members_interface.member_tbody.innerHTML = new_member_tbody;
 					        members_interface.member_manage();
+				       } else {
+				       		members_interface.member_table.innerHTML = '<span>Currently there are no members in the keeper!</span>';
 				       }
 				    }
 				};

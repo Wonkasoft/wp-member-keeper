@@ -149,7 +149,7 @@ defined( 'WPINC' ) || exit;
 										<h3>Ministries</h3>
 									</th>
 									<th>
-										<h3>Manage</h3>
+										<h3>Manage <i class="fas fa-download download"></i></h3> 
 									</th>
 								</tr>
 							</thead>         

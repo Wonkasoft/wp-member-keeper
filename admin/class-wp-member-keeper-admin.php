@@ -57,6 +57,7 @@ class Wp_Member_Keeper_Admin {
 	 * Register the stylesheets for the admin area.
 	 *
 	 * @since    1.0.0
+	 * @param string $page current page.
 	 */
 	public function enqueue_styles( $page ) {
 
@@ -83,6 +84,7 @@ class Wp_Member_Keeper_Admin {
 	 * Register the JavaScript for the admin area.
 	 *
 	 * @since    1.0.0
+	 * @param string $page current page.
 	 */
 	public function enqueue_scripts( $page ) {
 
@@ -105,7 +107,7 @@ class Wp_Member_Keeper_Admin {
 	}
 
 	/**
-	 * wp_member_keeper_admin_display
+	 * This creates the plugin menu.
 	 */
 	public function wp_member_keeper_admin_display() {
 
@@ -152,7 +154,9 @@ class Wp_Member_Keeper_Admin {
 		}
 	}
 
-	// To display the setting page for this plugin
+	/**
+	 * To display the setting page for this plugin.
+	 */
 	public function wp_member_keeper_page_show_settings_page() {
 		include plugin_dir_path( __FILE__ ) . 'partials/wp-member-keeper-admin-display.php';
 	}
@@ -166,7 +170,7 @@ class Wp_Member_Keeper_Admin {
 	public function wp_member_keeper_add_settings_link_filter( $links ) {
 		$links_addon = '<a href="' . menu_page_url( WONKASOFT_PLUGIN_ADMIN_PAGE, 0 ) . '" target="_self">Settings</a>';
 		array_unshift( $links, $links_addon );
-		$links[] = '<a href="https://paypal.me/Wonkasoft" target="blank"><img src="' . WP_MEMBER_KEEPER_URI . 'admin/img/wonka-logo.svg' . '" style="width: 20px; height: 20px; display: inline-block;
+		$links[] = '<a href="https://paypal.me/Wonkasoft" target="blank"><img src="' . WP_MEMBER_KEEPER_URI . 'admin/img/wonka-logo.svg" style="width: 20px; height: 20px; display: inline-block;
 	    vertical-align: text-top; float: none;" /></a>';
 		return $links;
 	}
@@ -181,7 +185,7 @@ class Wp_Member_Keeper_Admin {
 	public function wp_member_keeper_add_description_link_filter( $links, $file ) {
 		if ( strpos( $file, 'wp-member-keeper.php' ) !== false ) {
 			$links[] = '<a href="' . menu_page_url( WONKASOFT_PLUGIN_ADMIN_PAGE, 0 ) . '" target="_self">Settings</a>';
-			$links[] = '<a href="https://paypal.me/Wonkasoft" target="blank">Donate <img src="' . WP_MEMBER_KEEPER_URI . 'admin/img/wonka-logo.svg' . '" style="width: 20px; height: 20px; display: inline-block;
+			$links[] = '<a href="https://paypal.me/Wonkasoft" target="blank">Donate <img src="' . WP_MEMBER_KEEPER_URI . 'admin/img/wonka-logo.svg" style="width: 20px; height: 20px; display: inline-block;
 	    vertical-align: text-top;" /></a>';
 		}
 		return $links;
@@ -192,7 +196,8 @@ class Wp_Member_Keeper_Admin {
 	 */
 	public function add_member_to_keeper() {
 
-		wp_verify_nonce( wp_unslash( $_POST['_wpmk_nonce'] ), 'wpmk_add_member_form' ) || die( 'Busted!' );
+		$nonce = ( isset( $_POST['_wpmk_nonce'] ) ) ? stripcslashes( $_POST['_wpmk_nonce'] ) : '';
+		wp_verify_nonce( $nonce, 'wpmk_add_member_form' ) || die( 'Busted!' );
 
 		global $wpdb;
 
@@ -203,9 +208,9 @@ class Wp_Member_Keeper_Admin {
 
 		foreach ( $_POST as $key => $value ) :
 			if ( 'family_id' === $key ) :
-				$info[ $key ] = ( ! empty( $value ) ) ? wp_unslash( $value ) : 0;
+				$info[ $key ] = ( ! empty( $value ) ) ? stripcslashes( $value ) : 0;
 			else :
-				$info[ $key ] = ( ! empty( $value ) ) ? wp_unslash( $value ) : '';
+				$info[ $key ] = ( ! empty( $value ) ) ? stripcslashes( $value ) : '';
 			endif;
 		endforeach;
 
@@ -213,61 +218,33 @@ class Wp_Member_Keeper_Admin {
 
 		$table_name = $wpdb->prefix . str_replace( ' ', '_', str_replace( 'wp ', '', strtolower( WP_MEMBER_KEEPER_NAME ) ) );
 
-		$results = $wpdb->get_results( "SELECT * FROM $table_name WHERE first_name = '$info->first_name' AND last_name = '$info->last_name'", OBJECT );
+		$results = $wpdb->get_results(
+			"SELECT * FROM $table_name WHERE first_name = '$info->first_name' AND last_name = '$info->last_name'",
+			OBJECT
+		);
 
 		$return = array(
 			'msg'  => 'Member already exits',
 			'data' => $results,
 		);
+
 		if ( empty( $results ) ) :
-			$results = $wpdb->query(
-				$wpdb->prepare(
-					"
-			   INSERT INTO $table_name ( 
-				   last_modified, 
-				   first_name, 
-				   last_name, 
-				   email, 
-				   phone, 
-				   street_address, 
-				   city, 
-				   state, 
-				   zip_code, 
-				   birth_date, 
-				   family_id, 
-				   ministries
-			   )
-			   VALUES ( 
-				   %s, 
-				   %s, 
-				   %s, 
-				   %s, 
-				   %s, 
-				   %s, 
-				   %s, 
-				   %s, 
-				   %s, 
-				   %s, 
-				   %d, 
-				   %s
-			   )
-			   ",
-					array(
-						$info->last_modified,
-						$info->first_name,
-						$info->last_name,
-						$info->email,
-						$info->phone,
-						$info->street_address,
-						$info->city,
-						$info->state,
-						$info->zip_code,
-						$info->birth_date,
-						$info->family_id,
-						$info->ministries,
-					)
-				)
+			$data    = array(
+				'last_modified'  => $info->last_modified,
+				'first_name'     => $info->first_name,
+				'last_name'      => $info->last_name,
+				'email'          => $info->email,
+				'phone'          => $info->phone,
+				'street_address' => $info->street_address,
+				'city'           => $info->city,
+				'state'          => $info->state,
+				'zip_code'       => $info->zip_code,
+				'birth_date'     => $info->birth_date,
+				'family_id'      => $info->family_id,
+				'ministries'     => $info->ministries,
 			);
+			$format  = array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%s' );
+			$results = $wpdb->insert( $table_name, $data, $format );
 
 			if ( $results ) :
 				$results = $wpdb->get_results( "SELECT * FROM $table_name", OBJECT );
@@ -291,8 +268,8 @@ class Wp_Member_Keeper_Admin {
 	 * This function is the ajax request that allows for member edits.
 	 */
 	public function edit_member_to_keeper() {
-
-		wp_verify_nonce( wp_unslash( $_POST['_wpmk_edit_nonce'] ), 'wpmk_edit_member_form' ) || die( 'Busted!' );
+		$nonce = isset( $_POST['_wpmk_edit_nonce'] ) ? wp_kses_data( wp_unslash( $_POST['_wpmk_edit_nonce'] ) ) : '';
+		wp_verify_nonce( $nonce, 'wpmk_edit_member_form' ) || die( 'Busted!' );
 
 		global $wpdb;
 
@@ -312,12 +289,14 @@ class Wp_Member_Keeper_Admin {
 
 		$info = array();
 
+		$member_id = isset( $_POST['id'] ) ? wp_kses( wp_unslash( $_POST['id'] ) ) : 0;
+
 		foreach ( $_POST as $key => $value ) :
 			if ( 'family_id' === $key ) :
-				$info[ $key ] = ( ! empty( $value ) ) ? wp_unslash( $value ) : wp_unslash( $_POST['id'] );
+				$info[ $key ] = ( isset( $_POST[ $key ] ) ) ? wp_kses( wp_unslash( $value ) ) : $member_id;
 			else :
 				if ( in_array( $key, $fields ) ) :
-					$info[ $key ] = ( ! empty( $value ) ) ? wp_unslash( $value ) : '';
+					$info[ $key ] = ( ! empty( $value ) ) ? wp_kses( wp_unslash( $value ) ) : '';
 				endif;
 			endif;
 		endforeach;
@@ -359,7 +338,10 @@ class Wp_Member_Keeper_Admin {
 		);
 
 		if ( $results ) :
-			$results = $wpdb->get_results( "SELECT * FROM $table_name", OBJECT );
+			$results = $wpdb->get_results(
+				$wpdb->prepare( 'SELECT * FROM %s', $table_name ),
+				OBJECT
+			);
 			$return  = array(
 				'msg'  => 'Member was recorded. Here is all members.',
 				'data' => $results,
@@ -378,16 +360,19 @@ class Wp_Member_Keeper_Admin {
 	 * This function is the ajax request that gets member info.
 	 */
 	public function get_member_from_keeper() {
-
-		wp_verify_nonce( wp_unslash( $_GET['_wpmk_member_table'] ), '_wpmk_member_table' ) || die( 'Busted!' );
+		$nonce = isset( $_POST['_wpmk_member_table'] ) ? wp_kses( wp_unslash( $_POST['_wpmk_member_table'] ) ) : '';
+		wp_verify_nonce( $nonce, '_wpmk_member_table' ) || die( 'Busted!' );
 
 		global $wpdb;
 
-		$member_id = ( isset( $_GET['member_id'] ) ) ? wp_unslash( $_GET['member_id'] ) : 0;
+		$member_id = ( isset( $_GET['member_id'] ) ) ? wp_kses( wp_unslash( $_GET['member_id'] ) ) : 0;
 
 		$table_name = $wpdb->prefix . str_replace( ' ', '_', str_replace( 'wp ', '', strtolower( WP_MEMBER_KEEPER_NAME ) ) );
 
-		$results = $wpdb->get_results( "SELECT * FROM $table_name WHERE id = '$member_id'", OBJECT );
+		$results = $wpdb->get_results(
+			$wpdb->prepare( 'SELECT * FROM %s WHERE id = %s', array( $table_name, $member_id ) ),
+			OBJECT
+		);
 
 		if ( ! empty( $results ) ) :
 			$return = array(
@@ -408,12 +393,12 @@ class Wp_Member_Keeper_Admin {
 	 * This function is the ajax request that deletes member info.
 	 */
 	public function delete_member_from_keeper() {
-
-		wp_verify_nonce( esc_html( $_POST['_wpmk_member_table'] ), '_wpmk_member_table' ) || die( 'Busted!' );
+		$nonce = isset( $_POST['_wpmk_member_table'] ) ? wp_kses_data( wp_unslash( $_POST['_wpmk_member_table'] ) ) : '';
+		wp_verify_nonce( $nonce, '_wpmk_member_table' ) || die( 'Busted!' );
 
 		global $wpdb;
 
-		$member_id = ( isset( $_POST['member_id'] ) ) ? wp_unslash( $_POST['member_id'] ) : 0;
+		$member_id = ( isset( $_POST['member_id'] ) ) ? wp_kses_data( wp_unslash( $_POST['member_id'] ) ) : 0;
 
 		$where = array(
 			'id' => $member_id,
