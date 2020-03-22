@@ -149,7 +149,7 @@ defined( 'WPINC' ) || exit;
 										<h3>Ministries</h3>
 									</th>
 									<th>
-										<h3>Manage <i class="fas fa-download download"></i></h3> 
+										<h3>Manage <i class="fas fa-download download" title="Download CSV"></i></h3> 
 									</th>
 								</tr>
 							</thead>         
@@ -166,7 +166,7 @@ defined( 'WPINC' ) || exit;
 									<td><?php echo esc_html( $member->phone ); ?></td>
 									<td><?php echo esc_html( $member->email ); ?></td>
 									<td><?php echo esc_html( $member->ministries ); ?></td>
-									<td><i data-member="<?php echo esc_html( $member->id ); ?>" class="fas fa-user-edit edit"></i> <i data-member="<?php echo esc_html( $member->id ); ?>" class="fas fa-trash-alt remove"></i></td>
+									<td><i data-member="<?php echo esc_html( $member->id ); ?>" class="fas fa-user-edit edit" title="Edit Member"></i> <i data-member="<?php echo esc_html( $member->id ); ?>" class="fas fa-trash-alt remove" title="Delete Member"></i></td>
 								</tr>
 					<?php endforeach; ?>
 						
