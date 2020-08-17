@@ -135,13 +135,15 @@
 				var data = {};
 				data.action = 'get_member_from_keeper';
 				data.member_id = member_id;
-				data._wpmk_member_table = this.get_member_edit_nonce();
+				data._wpmk_edit_nonce = this.get_member_edit_nonce();
 
 				var query_string = Object.keys( data ).map( function( key ) { return key + '=' + data[key]; } ).join('&');
 				this.xhr.onreadystatechange = function() {
 				    if (this.readyState == 4 && this.status == 200) {
 				       // Typical action to be performed when the document is ready:
+				       console.log(members_interface.xhr.responseText);
 				       var response = JSON.parse( members_interface.xhr.responseText );
+				       console.log( response );
 				       response = response.data.data.shift();
 				       for( var key in response ) {
 				       	if ( '0000-00-00' == response[key] ) {
