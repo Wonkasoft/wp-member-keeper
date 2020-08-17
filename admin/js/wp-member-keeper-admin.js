@@ -135,7 +135,7 @@
 				var data = {};
 				data.action = 'get_member_from_keeper';
 				data.member_id = member_id;
-				data._wpmk_member_table = this.member_table.getAttribute( 'data-security');
+				data._wpmk_member_table = this.get_member_edit_nonce();
 
 				var query_string = Object.keys( data ).map( function( key ) { return key + '=' + data[key]; } ).join('&');
 				this.xhr.onreadystatechange = function() {
@@ -222,6 +222,9 @@
 						}
 					});
 				});
+			},
+			get_member_edit_nonce: function() {
+				return document.querySelector( '#_wpmk_edit_nonce' ).value;
 			},
 			init: function() {
 				this.submit_btn.addEventListener( 'click', this.submit );
