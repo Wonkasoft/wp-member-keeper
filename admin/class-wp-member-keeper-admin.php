@@ -268,7 +268,7 @@ class Wp_Member_Keeper_Admin {
 	 * This function is the ajax request that allows for member edits.
 	 */
 	public function edit_member_to_keeper() {
-		$nonce = isset( $_POST['_wpmk_edit_nonce'] ) ? wp_kses_data( wp_unslash( $_POST['_wpmk_edit_nonce'] ) ) : '';
+		$nonce = isset( $_GET['_wpmk_edit_nonce'] ) ? wp_kses_data( wp_unslash( $_GET['_wpmk_edit_nonce'] ) ) : '';
 		wp_verify_nonce( $nonce, 'wpmk_edit_member_form' ) || die( 'Busted!' );
 
 		global $wpdb;
@@ -289,11 +289,11 @@ class Wp_Member_Keeper_Admin {
 
 		$info = array();
 
-		$member_id = isset( $_POST['id'] ) ? wp_kses( wp_unslash( $_POST['id'] ) ) : 0;
+		$member_id = isset( $_GET['member_id'] ) ? wp_kses( wp_unslash( $_GET['member_id'] ) ) : 0;
 
-		foreach ( $_POST as $key => $value ) :
+		foreach ( $_GET as $key => $value ) :
 			if ( 'family_id' === $key ) :
-				$info[ $key ] = ( isset( $_POST[ $key ] ) ) ? wp_kses( wp_unslash( $value ) ) : $member_id;
+				$info[ $key ] = ( isset( $_GET[ $key ] ) ) ? wp_kses( wp_unslash( $value ) ) : $member_id;
 			else :
 				if ( in_array( $key, $fields ) ) :
 					$info[ $key ] = ( ! empty( $value ) ) ? wp_kses( wp_unslash( $value ) ) : '';
@@ -301,7 +301,7 @@ class Wp_Member_Keeper_Admin {
 			endif;
 		endforeach;
 
-		$info['last_modified'] = new DateTime( null, new DateTimeZone( 'AMERICA/Denver' ) );
+		$info['last_modified'] = new DateTime( null, new DateTimeZone( 'AMERICA/Los Angeles' ) );
 		$info['last_modified'] = $info['last_modified']->format( 'Y-m-d H:i:s' );
 		$info['state']         = 'CA';
 
