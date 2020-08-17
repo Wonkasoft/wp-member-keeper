@@ -285,7 +285,7 @@ defined( 'WPINC' ) || exit;
 						</div>
 						<div class="prepend-wrap">
 							<span class="prepend-label">State</span>
-							<input type="text" class="member-field-inputs" id="edit_state" name="state" disabled value="CA">
+							<input type="text" class="member-field-inputs" id="edit_state" name="state" value="CA" disabled>
 						</div>
 						<div class="prepend-wrap">
 							<span class="prepend-label">Zip Code</span>
