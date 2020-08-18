@@ -292,7 +292,7 @@ class Wp_Member_Keeper_Admin {
 
 		$member_id = ( isset( $_POST['id'] ) ) ? wp_unslash( $_POST['id'] ) : 0;
 
-		$info['last_modified'] = new DateTime( time(), new DateTimeZone( 'AMERICA/Los Angeles' ) );
+		$info['last_modified'] = new DateTime( 'now', new DateTimeZone( 'America/Los_Angeles' ) );
 		$info['last_modified'] = $info['last_modified']->format( 'Y-m-d H:i:s' );
 
 		foreach ( $_POST as $key => $value ) :
@@ -304,10 +304,6 @@ class Wp_Member_Keeper_Admin {
 				endif;
 			endif;
 		endforeach;
-
-		echo "<pre>\n";
-		print_r( $info );
-		echo "</pre>\n";
 			
 		$where = array(
 			'id' => $info['id'],
