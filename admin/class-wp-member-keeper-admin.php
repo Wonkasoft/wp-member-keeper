@@ -285,6 +285,7 @@ class Wp_Member_Keeper_Admin {
 			'zip_code',
 			'birth_date',
 			'family_id',
+			'id',
 			'ministries',
 		);
 
@@ -310,13 +311,9 @@ class Wp_Member_Keeper_Admin {
 		);
 
 		unset( $info['id'] );
-		
-		$where_format = array(
-			'%d',
-		);
 
 		$table_name = $wpdb->prefix . str_replace( ' ', '_', str_replace( 'wp ', '', strtolower( WP_MEMBER_KEEPER_NAME ) ) );
-
+			
 		$results = $wpdb->update(
 			$table_name,
 			$info,
@@ -329,7 +326,7 @@ class Wp_Member_Keeper_Admin {
 				OBJECT
 			);
 			$return  = array(
-				'msg'  => 'Member was recorded. Here is all members.',
+				'msg'  => 'Member was recorded.',
 				'data' => $results,
 			);
 		else :
