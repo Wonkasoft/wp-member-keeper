@@ -289,14 +289,14 @@ class Wp_Member_Keeper_Admin {
 
 		$info = array();
 
-		$member_id = isset( $_POST['id'] ) ? wp_kses( wp_unslash( $_POST['id'] ) ) : 0;
+		$member_id = isset( $_POST['id'] ) ? wp_kses_data( wp_unslash( $_POST['id'] ) ) : 0;
 
 		foreach ( $_POST as $key => $value ) :
 			if ( 'family_id' === $key ) :
-				$info[ $key ] = ( isset( $_POST[ $key ] ) ) ? wp_kses( wp_unslash( $value ) ) : $member_id;
+				$info[ $key ] = ( isset( $_POST[ $key ] ) ) ? wp_kses_data( wp_unslash( $value ) ) : $member_id;
 			else :
 				if ( in_array( $key, $fields ) ) :
-					$info[ $key ] = ( ! empty( $value ) ) ? wp_kses( wp_unslash( $value ) ) : '';
+					$info[ $key ] = ( ! empty( $value ) ) ? wp_kses_data( wp_unslash( $value ) ) : '';
 				endif;
 			endif;
 		endforeach;
@@ -339,7 +339,7 @@ class Wp_Member_Keeper_Admin {
 
 		if ( $results ) :
 			$results = $wpdb->get_results(
-				$wpdb->prepare( 'SELECT * FROM %s', $table_name ),
+				$wpdb->prepare( 'SELECT * FROM ' . $table_name ),
 				OBJECT
 			);
 			$return  = array(
