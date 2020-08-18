@@ -375,7 +375,7 @@ class Wp_Member_Keeper_Admin {
 		if ( ! empty( $results ) ) :
 			$return = array(
 				'msg'  => 'Members info retrived.',
-				'data'  => json_decode( json_encode( $results ) ),
+				'data'  => json_encode( $results  ),
 			);
 		else :
 			$return = array(
