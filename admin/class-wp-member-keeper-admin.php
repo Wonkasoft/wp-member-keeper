@@ -366,14 +366,19 @@ class Wp_Member_Keeper_Admin {
 		global $wpdb;
 
 		$member_id = ( isset( $_GET['member_id'] ) ) ? wp_kses( wp_unslash( $_GET['member_id'] ) ) : 0;
-
+		echo "<pre>\n";
+		print_r( $member_id );
+		echo "</pre>\n";
 		$table_name = $wpdb->prefix . str_replace( ' ', '_', str_replace( 'wp ', '', strtolower( WP_MEMBER_KEEPER_NAME ) ) );
 
 		$results = $wpdb->get_results(
 			$wpdb->prepare( 'SELECT * FROM %s WHERE id = %s', array( $table_name, $member_id ) ),
 			OBJECT
 		);
-
+		echo "<pre>\n";
+		print_r( $results );
+		echo "</pre>\n";
+			
 		if ( ! empty( $results ) ) :
 			$return = array(
 				'msg'  => 'Members info retrived.',
