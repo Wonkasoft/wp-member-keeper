@@ -268,16 +268,13 @@ class Wp_Member_Keeper_Admin {
 	 * This function is the ajax request that allows for member edits.
 	 */
 	public function edit_member_to_keeper() {
-		echo "<pre>\n";
-		print_r( $_POST );
-		echo "</pre>\n";
-			
 		$nonce = isset( $_POST['_wpmk_edit_nonce'] ) ? wp_kses_post( wp_unslash( $_POST['_wpmk_edit_nonce'] ) ) : '';
 		wp_verify_nonce( $nonce, 'wpmk_edit_member_form' ) || die( 'Busted!' );
 
 		global $wpdb;
 
 		$fields = array(
+			'last_modified',
 			'first_name',
 			'last_name',
 			'email',
@@ -288,13 +285,15 @@ class Wp_Member_Keeper_Admin {
 			'zip_code',
 			'birth_date',
 			'family_id',
-			'id',
 			'ministries',
 		);
 
 		$info = array();
 
 		$member_id = isset( $_POST['id'] ) ? wp_kses_post( wp_unslash( $_POST['id'] ) ) : 0;
+
+		$info['last_modified'] = new DateTime( null, new DateTimeZone( 'AMERICA/Los Angeles' ) );
+		$info['last_modified'] = $info['last_modified']->format( 'Y-m-d H:i:s' );
 
 		foreach ( $_POST as $key => $value ) :
 			if ( 'family_id' === $key ) :
@@ -305,12 +304,6 @@ class Wp_Member_Keeper_Admin {
 				endif;
 			endif;
 		endforeach;
-
-		$info['last_modified'] = new DateTime( null, new DateTimeZone( 'AMERICA/Los Angeles' ) );
-		$info['last_modified'] = $info['last_modified']->format( 'Y-m-d H:i:s' );
-		echo "<pre>\n";
-		print_r( $info );
-		echo "</pre>\n";
 
 		$where = array(
 			'id' => $info['id'],
@@ -323,10 +316,11 @@ class Wp_Member_Keeper_Admin {
 			'%s',
 			'%s',
 			'%s',
-			'%d',
+			'%s',
+			'%s',
+			'%s',
 			'%s',
 			'%d',
-			'%s',
 			'%s',
 		);
 
