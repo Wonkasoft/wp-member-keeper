@@ -228,11 +228,18 @@
 			get_member_edit_nonce: function() {
 				return document.querySelector( '.member-table' ).getAttribute( 'data-security' );
 			},
+			edit_tab_check: function() {
+				if ( true != this.tab_edit.is( ':disabled' ) ) {
+					this.tab_edit.setAttribute( 'disabled', true );
+				}
+			},
 			init: function() {
 				this.submit_btn.addEventListener( 'click', this.submit );
 				if ( 'none' !== this.member_edit_btns ) {
 					this.member_manage();
 				}
+
+				this.tab_list.addEventListener( 'click', this.edit_tab_check );
 			}
 		};
 		members_interface.init();

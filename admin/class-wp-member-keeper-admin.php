@@ -375,12 +375,12 @@ class Wp_Member_Keeper_Admin {
 	 * This function is the ajax request that deletes member info.
 	 */
 	public function delete_member_from_keeper() {
-		$nonce = isset( $_POST['_wpmk_member_table'] ) ? wp_kses_data( wp_unslash( $_POST['_wpmk_member_table'] ) ) : '';
+		$nonce = isset( $_POST['_wpmk_member_table'] ) ? wp_unslash( $_POST['_wpmk_member_table'] ) : '';
 		wp_verify_nonce( $nonce, '_wpmk_member_table' ) || die( 'Busted!' );
 
 		global $wpdb;
 
-		$member_id = ( isset( $_POST['member_id'] ) ) ? wp_kses_data( wp_unslash( $_POST['member_id'] ) ) : 0;
+		$member_id = ( isset( $_POST['member_id'] ) ) ? wp_unslash( $_POST['member_id'] ) : 0;
 
 		$where = array(
 			'id' => $member_id,
