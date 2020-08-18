@@ -141,20 +141,20 @@
 				this.xhr.onreadystatechange = function() {
 				    if (this.readyState == 4 && this.status == 200) {
 				       // Typical action to be performed when the document is ready:
-				       console.log(members_interface.xhr.responseText);
-				       
-				       // var response = JSON.parse( members_interface.xhr.responseText );
-				       // console.log( response );
-				       // response = response.data.data.shift();
-				       // for( var key in response ) {
-				       // 	if ( '0000-00-00' == response[key] ) {
-				       // 		response[key] = '';
-				       // 	}
+				       if ( 'undefined' != members_interface.xhr.responseText ) {
+					       var response = JSON.parse( members_interface.xhr.responseText );
+					       console.log( response );
+					       response = response.data.data.shift();
+					       for( var key in response ) {
+					       	if ( '0000-00-00' == response[key] ) {
+					       		response[key] = '';
+					       	}
 
-				       // 	if ( document.querySelector( 'form.edit-member-form input[name=' + key + ']' ) ) {
-				       // 		document.querySelector( 'form.edit-member-form input[name=' + key + ']' ).value = response[key];
-				       // 	}
-				       // }
+					       	if ( document.querySelector( 'form.edit-member-form input[name=' + key + ']' ) ) {
+					       		document.querySelector( 'form.edit-member-form input[name=' + key + ']' ).value = response[key];
+					       	}
+					       }
+				       }
 				    }
 				};
 				this.xhr.open("GET", ajaxurl + '?' + query_string, true);
