@@ -233,7 +233,7 @@
 				return document.querySelector( '.member-table' ).getAttribute( 'data-security' );
 			},
 			edit_tab_check: function() {
-				if ( true != members_interface.tab_edit.disabled ) ) {
+				if ( true != members_interface.tab_edit.disabled ) {
 					members_interface.tab_edit.classList.add( 'disabled' );
 					members_interface.tab_edit.setAttribute( 'disabled', true );
 				}
