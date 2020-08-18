@@ -368,7 +368,7 @@ class Wp_Member_Keeper_Admin {
 		$table_name = $wpdb->prefix . str_replace( ' ', '_', str_replace( 'wp ', '', strtolower( WP_MEMBER_KEEPER_NAME ) ) );
 
 		$results = $wpdb->get_results(
-			$wpdb->prepare( 'SELECT * FROM %s WHERE id = "%s"', $table_name, $member_id ),
+			$wpdb->prepare( 'SELECT * FROM %s WHERE id = %d', $table_name, $member_id ),
 			OBJECT
 		);
 			
