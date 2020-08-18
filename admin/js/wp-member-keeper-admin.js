@@ -226,7 +226,7 @@
 				});
 			},
 			get_member_edit_nonce: function() {
-				return document.querySelector( '#_wpmk_edit_nonce' ).value;
+				return document.querySelector( '.member-table' ).getAttribute( 'data-security' );
 			},
 			init: function() {
 				this.submit_btn.addEventListener( 'click', this.submit );

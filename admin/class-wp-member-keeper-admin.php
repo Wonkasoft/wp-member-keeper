@@ -360,8 +360,8 @@ class Wp_Member_Keeper_Admin {
 	 * This function is the ajax request that gets member info.
 	 */
 	public function get_member_from_keeper() {
-		$nonce = isset( $_GET['_wpmk_edit_nonce'] ) ? wp_kses( wp_unslash( $_GET['_wpmk_edit_nonce'] ) ) : '';
-		wp_verify_nonce( $nonce, -1 ) || die( 'Busted!' );
+		$nonce = isset( $_GET['_wpmk_member_table'] ) ? wp_kses( wp_unslash( $_GET['_wpmk_member_table'] ) ) : '';
+		wp_verify_nonce( $nonce, '_wpmk_member_table' ) || die( 'Busted!' );
 
 		global $wpdb;
 
