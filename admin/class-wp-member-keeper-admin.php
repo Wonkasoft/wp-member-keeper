@@ -203,7 +203,7 @@ class Wp_Member_Keeper_Admin {
 
 		$info = array();
 
-		$info['last_modified'] = new DateTime( null, new DateTimeZone( 'America/Los_Angeles' ) );
+		$info['last_modified'] = new DateTime( 'now', new DateTimeZone( 'America/Los_Angeles' ) );
 		$info['last_modified'] = $info['last_modified']->format( 'Y-m-d H:i:s' );
 
 		foreach ( $_POST as $key => $value ) :
