@@ -303,7 +303,7 @@ defined( 'WPINC' ) || exit;
 						</div>
 						<div class="prepend-wrap">
 							<span class="prepend-label">Member ID</span>
-							<input type="number" class="member-field-inputs" id="edit_id" name="id">
+							<input type="number" class="member-field-inputs" id="edit_id" name="id" disabled>
 						</div>
 					</div>
 					<div class="input-group">
