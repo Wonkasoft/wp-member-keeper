@@ -150,9 +150,8 @@
 					       	}
 
 					       	if ( document.querySelector( 'form.edit-member-form input[name=' + key + ']' ) ) {
-					       		if ( 'id' === key && "0" == document.querySelector( 'form.edit-member-form input[name="family_id"]' ).value ) {
-					       			document.querySelector( 'form.edit-member-form input[name="family_id"]' ).value = response[key];
-									document.querySelector( 'form.edit-member-form input[name=' + key + ']' ).value = response[key];
+					       		if ( 'family_id' === key && "0" == response[key] ) {
+									document.querySelector( 'form.edit-member-form input[name=' + key + ']' ).value = response.id;
 					       		} else {
 									document.querySelector( 'form.edit-member-form input[name=' + key + ']' ).value = response[key];
 					       		}
