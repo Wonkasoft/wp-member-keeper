@@ -373,9 +373,10 @@ class Wp_Member_Keeper_Admin {
 		);
 			
 		if ( ! empty( $results ) ) :
+			$results = json_decode( json_encode( $results  ), true );
 			$return = array(
 				'msg'  => 'Members info retrived.',
-				'data'  => json_encode( $results  ),
+				'data'  => $results,
 			);
 		else :
 			$return = array(
