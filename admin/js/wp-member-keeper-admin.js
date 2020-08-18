@@ -150,7 +150,7 @@
 					       	}
 
 					       	if ( document.querySelector( 'form.edit-member-form input[name=' + key + ']' ) ) {
-					       		if ( 'id' === key && 0 == document.querySelector( 'form.edit-member-form input[name="family_id"]' ).value ) {
+					       		if ( 'id' === key && "0" == document.querySelector( 'form.edit-member-form input[name="family_id"]' ).value ) {
 					       			document.querySelector( 'form.edit-member-form input[name="family_id"]' ).value = response[key];
 									document.querySelector( 'form.edit-member-form input[name=' + key + ']' ).value = response[key];
 					       		} else {
