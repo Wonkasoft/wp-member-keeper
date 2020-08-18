@@ -261,7 +261,7 @@ class Wp_Member_Keeper_Admin {
 
 		endif;
 
-		return wp_send_json_success( $return, 200 );
+		wp_send_json_success( $return, 200 );
 	}
 
 	/**
@@ -353,7 +353,7 @@ class Wp_Member_Keeper_Admin {
 			);
 		endif;
 
-		return wp_send_json_success( $return, 200 );
+		wp_send_json_success( $return, 200 );
 	}
 
 	/**
@@ -368,7 +368,7 @@ class Wp_Member_Keeper_Admin {
 		$table_name = $wpdb->prefix . str_replace( ' ', '_', str_replace( 'wp ', '', strtolower( WP_MEMBER_KEEPER_NAME ) ) );
 
 		$results = $wpdb->get_results(
-			$wpdb->prepare( 'SELECT * FROM %s WHERE id = %d', $table_name, $member_id ),
+			$wpdb->prepare( "SELECT * FROM $table_name WHERE id = %d", array( $member_id ) ),
 			OBJECT
 		);
 			
@@ -422,6 +422,6 @@ class Wp_Member_Keeper_Admin {
 			);
 		endif;
 
-		return wp_send_json_success( $return, 200 );
+		wp_send_json_success( $return, 200 );
 	}
 }

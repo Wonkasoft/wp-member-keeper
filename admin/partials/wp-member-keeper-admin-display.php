@@ -23,7 +23,7 @@ defined( 'WPINC' ) || exit;
 				global $wpdb;
 				$table_name = $wpdb->prefix . str_replace( ' ', '_', str_replace( 'wp ', '', strtolower( WP_MEMBER_KEEPER_NAME ) ) );
 				$results    = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM ' . $table_name ) );
-
+					
 				$current_logo_id = get_option( 'wp_member_keeper_logo' );
 
 			if ( ! empty( $_FILES ) ) :
