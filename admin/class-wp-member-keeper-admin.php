@@ -309,21 +309,8 @@ class Wp_Member_Keeper_Admin {
 			'id' => $info['id'],
 		);
 
-		$format = array(
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%d',
-			'%s',
-		);
-
+		unset( $info['id'] );
+		
 		$where_format = array(
 			'%d',
 		);
@@ -334,8 +321,6 @@ class Wp_Member_Keeper_Admin {
 			$table_name,
 			$info,
 			$where,
-			$format,
-			$where_format,
 		);
 
 		if ( ! empty( $results ) ) :
