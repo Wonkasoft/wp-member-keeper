@@ -143,9 +143,7 @@
 				       // Typical action to be performed when the document is ready:
 				       if ( 'undefined' != members_interface.xhr.responseText ) {
 					       var response = JSON.parse( members_interface.xhr.responseText );
-					       console.log( response );
 					       response = response.data.data;
-					       console.log( response );
 					       for( var key in response ) {
 					       	if ( '0000-00-00' == response[key] ) {
 					       		response[key] = '';

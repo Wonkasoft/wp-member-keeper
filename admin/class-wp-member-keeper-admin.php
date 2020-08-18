@@ -281,6 +281,7 @@ class Wp_Member_Keeper_Admin {
 			'phone',
 			'street_address',
 			'city',
+			'state',
 			'zip_code',
 			'birth_date',
 			'family_id',
@@ -337,7 +338,7 @@ class Wp_Member_Keeper_Admin {
 			$where_format,
 		);
 
-		if ( $results ) :
+		if ( ! empty( $results ) ) :
 			$results = $wpdb->get_results(
 				$wpdb->prepare( 'SELECT * FROM ' . $table_name ),
 				OBJECT
