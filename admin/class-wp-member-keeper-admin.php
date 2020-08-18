@@ -268,6 +268,10 @@ class Wp_Member_Keeper_Admin {
 	 * This function is the ajax request that allows for member edits.
 	 */
 	public function edit_member_to_keeper() {
+		echo "<pre>\n";
+		print_r( $_POST );
+		echo "</pre>\n";
+			
 		$nonce = isset( $_POST['_wpmk_edit_nonce'] ) ? wp_kses_post( wp_unslash( $_POST['_wpmk_edit_nonce'] ) ) : '';
 		wp_verify_nonce( $nonce, 'wpmk_edit_member_form' ) || die( 'Busted!' );
 
