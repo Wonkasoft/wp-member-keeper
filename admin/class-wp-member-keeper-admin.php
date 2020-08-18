@@ -290,21 +290,25 @@ class Wp_Member_Keeper_Admin {
 
 		$info = array();
 
-		$member_id = isset( $_POST['id'] ) ? wp_kses_post( wp_unslash( $_POST['id'] ) ) : 0;
+		$member_id = ( isset( $_POST['id'] ) ) ? wp_unslash( $_POST['id'] ) : 0;
 
 		$info['last_modified'] = new DateTime( null, new DateTimeZone( 'AMERICA/Los Angeles' ) );
 		$info['last_modified'] = $info['last_modified']->format( 'Y-m-d H:i:s' );
 
 		foreach ( $_POST as $key => $value ) :
 			if ( 'family_id' === $key ) :
-				$info[ $key ] = ( isset( $_POST[ $key ] ) ) ? wp_kses_post( wp_unslash( $value ) ) : $member_id;
+				$info[ $key ] = ( isset( $_POST[ $key ] ) ) ? wp_unslash( $value ) : $member_id;
 			else :
 				if ( in_array( $key, $fields ) ) :
-					$info[ $key ] = ( ! empty( $value ) ) ? wp_kses_post( wp_unslash( $value ) ) : '';
+					$info[ $key ] = ( ! empty( $value ) ) ? wp_unslash( $value ) : '';
 				endif;
 			endif;
 		endforeach;
 
+		echo "<pre>\n";
+		print_r( $info );
+		echo "</pre>\n";
+			
 		$where = array(
 			'id' => $info['id'],
 		);
