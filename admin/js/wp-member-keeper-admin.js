@@ -59,8 +59,8 @@
 				this.xhr.onreadystatechange = function() {
 				    if (this.readyState == 4 && this.status == 200) {
 				       // Typical action to be performed when the document is ready:
-				       var response = JSON.parse( members_interface.xhr.responseText );
-				       if ( '' != response.data.data ) {
+				       if ( 'undefined' != members_interface.xhr.responseText ) {
+				       		var response = JSON.parse( members_interface.xhr.responseText );
 				       		members_interface[current_form + '_inputs'].forEach( function( input, i ) {
 				       			if ( 'add_member_submit' !== input.id && 'edit_member_submit' !== input.id && '' !== input.name && 'hidden' !== input.type ) {
 				       				input.value = '';
