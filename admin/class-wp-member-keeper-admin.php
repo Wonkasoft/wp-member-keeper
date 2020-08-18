@@ -378,7 +378,6 @@ class Wp_Member_Keeper_Admin {
 				'msg'  => 'Members info retrived.',
 				'data'  => $results,
 			);
-			$return = json_encode( $return );
 		else :
 			$return = array(
 				'msg'  => 'No Member found by that ID.',
