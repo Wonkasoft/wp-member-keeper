@@ -301,6 +301,10 @@ defined( 'WPINC' ) || exit;
 							<span class="prepend-label">Family ID</span>
 							<input type="number" class="member-field-inputs" id="edit_family_id" name="family_id">
 						</div>
+						<div class="prepend-wrap">
+							<span class="prepend-label">Member ID</span>
+							<input type="number" class="member-field-inputs" id="edit_id" name="id">
+						</div>
 					</div>
 					<div class="input-group">
 						<div class="prepend-wrap">
@@ -308,7 +312,6 @@ defined( 'WPINC' ) || exit;
 							<input type="text" class="member-field-inputs" id="edit_ministries" name="ministries">
 						</div>
 					</div>
-					<input type="hidden" name="id">
 					<input type="hidden" name="member_form" value="edit">
 					<?php wp_nonce_field( 'wpmk_edit_member_form', '_wpmk_edit_nonce', true, true ); ?>
 					<div class="input-group">
