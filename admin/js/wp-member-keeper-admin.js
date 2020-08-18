@@ -104,8 +104,8 @@
 				    }
 				};
 				this.xhr.open("POST", ajaxurl + '?action=' + data.action, true);
-				this.xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=utf-8,");
-				this.xhr.send(  query_string );
+				this.xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8,");
+				this.xhr.send( query_string );
 			},
 			submit: function( e ) {
 				e.preventDefault();
