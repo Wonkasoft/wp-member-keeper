@@ -361,7 +361,7 @@ class Wp_Member_Keeper_Admin {
 	 */
 	public function get_member_from_keeper() {
 		$nonce = isset( $_GET['_wpmk_edit_nonce'] ) ? wp_kses( wp_unslash( $_GET['_wpmk_edit_nonce'] ) ) : '';
-		wp_verify_nonce( $nonce, '_wpmk_member_table' ) || die( 'Busted!' );
+		wp_verify_nonce( $nonce, 'wpmk_edit_member_form' ) || die( 'Busted!' );
 
 		global $wpdb;
 
@@ -375,9 +375,6 @@ class Wp_Member_Keeper_Admin {
 			$wpdb->prepare( 'SELECT * FROM %s WHERE id = %s', array( $table_name, $member_id ) ),
 			OBJECT
 		);
-		echo "<pre>\n";
-		print_r( $results );
-		echo "</pre>\n";
 			
 		if ( ! empty( $results ) ) :
 			$return = array(
