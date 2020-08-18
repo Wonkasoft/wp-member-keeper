@@ -364,13 +364,11 @@ class Wp_Member_Keeper_Admin {
 		wp_verify_nonce( $nonce, '_wpmk_member_table' ) || die( __( 'Busted!', 'wp-member-keeper' ) );
 		global $wpdb;
 		$member_id = ( isset( $_REQUEST['member_id'] ) ) ? wp_kses_post( wp_unslash( $_REQUEST['member_id'] ) ) : 0;
-		echo "<pre>\n";
-		print_r( $member_id );
-		echo "</pre>\n";
+			
 		$table_name = $wpdb->prefix . str_replace( ' ', '_', str_replace( 'wp ', '', strtolower( WP_MEMBER_KEEPER_NAME ) ) );
 
 		$results = $wpdb->get_results(
-			$wpdb->prepare( 'SELECT * FROM %s WHERE id = %s', array( $table_name, $member_id ) ),
+			$wpdb->prepare( 'SELECT * FROM %s WHERE id = "%s"', $table_name, $member_id ),
 			OBJECT
 		);
 			
@@ -382,11 +380,11 @@ class Wp_Member_Keeper_Admin {
 		else :
 			$return = array(
 				'msg'  => 'No Member found by that ID.',
-				'data' => 'none members found.',
+				'data' => 'No members found.',
 			);
 		endif;
 
-		return wp_send_json_success( $return, 200 );
+		wp_send_json_success( $return, 200 );
 	}
 
 	/**
