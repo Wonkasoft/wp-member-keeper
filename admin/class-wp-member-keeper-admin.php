@@ -278,7 +278,6 @@ class Wp_Member_Keeper_Admin {
 		global $wpdb;
 
 		$fields = array(
-			'id',
 			'first_name',
 			'last_name',
 			'email',
@@ -289,6 +288,7 @@ class Wp_Member_Keeper_Admin {
 			'zip_code',
 			'birth_date',
 			'family_id',
+			'id',
 			'ministries',
 		);
 
@@ -308,7 +308,9 @@ class Wp_Member_Keeper_Admin {
 
 		$info['last_modified'] = new DateTime( null, new DateTimeZone( 'AMERICA/Los Angeles' ) );
 		$info['last_modified'] = $info['last_modified']->format( 'Y-m-d H:i:s' );
-		$info['state']         = 'CA';
+		echo "<pre>\n";
+		print_r( $info );
+		echo "</pre>\n";
 
 		$where = array(
 			'id' => $info['id'],
