@@ -157,14 +157,14 @@
 				    }
 				};
 				this.xhr.open("GET", ajaxurl + '?' + query_string, true);
-				this.xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=utf-8,");
+				this.xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8,");
 				this.xhr.send();
 			},
 			delete_member_info: function( member_id ) {
 				var data = {};
 				data.action = 'delete_member_from_keeper';
 				data.member_id = member_id;
-				data._wpmk_member_table = this.member_table.getAttribute( 'data-security');
+				data._wpmk_member_table = this.get_member_edit_nonce();
 
 				var query_string = Object.keys( data ).map( function( key ) { return key + '=' + data[key]; } ).join('&');
 				this.xhr.onreadystatechange = function() {

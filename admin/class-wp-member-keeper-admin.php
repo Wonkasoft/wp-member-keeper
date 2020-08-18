@@ -360,33 +360,34 @@ class Wp_Member_Keeper_Admin {
 	 * This function is the ajax request that gets member info.
 	 */
 	public function get_member_from_keeper() {
-		$nonce = isset( $_GET['_wpmk_member_table'] ) ? wp_kses( wp_unslash( $_GET['_wpmk_member_table'] ) ) : '';
-		wp_verify_nonce( $nonce, '_wpmk_member_table' ) || die( 'Busted!' );
+		$nonce = isset( $_REQUEST['_wpmk_member_table'] ) ? wp_kses( wp_unslash( $_REQUEST['_wpmk_member_table'] ) ) : '';
+		if ( ! wp_verify_nonce( $nonce, '_wpmk_member_table' ) ) {
+		    die( __( 'Busted!', 'wp-member-keeper' ) ); 
+		} else {
+			global $wpdb;
+			$member_id = ( isset( $_REQUEST['member_id'] ) ) ? wp_kses( wp_unslash( $_REQUEST['member_id'] ) ) : 0;
+			echo "<pre>\n";
+			print_r( $member_id );
+			echo "</pre>\n";
+			$table_name = $wpdb->prefix . str_replace( ' ', '_', str_replace( 'wp ', '', strtolower( WP_MEMBER_KEEPER_NAME ) ) );
 
-		global $wpdb;
-
-		$member_id = ( isset( $_GET['member_id'] ) ) ? wp_kses( wp_unslash( $_GET['member_id'] ) ) : 0;
-		echo "<pre>\n";
-		print_r( $member_id );
-		echo "</pre>\n";
-		$table_name = $wpdb->prefix . str_replace( ' ', '_', str_replace( 'wp ', '', strtolower( WP_MEMBER_KEEPER_NAME ) ) );
-
-		$results = $wpdb->get_results(
-			$wpdb->prepare( 'SELECT * FROM %s WHERE id = %s', array( $table_name, $member_id ) ),
-			OBJECT
-		);
-			
-		if ( ! empty( $results ) ) :
-			$return = array(
-				'msg'  => 'Members info retrived.',
-				'data' => $results,
+			$results = $wpdb->get_results(
+				$wpdb->prepare( 'SELECT * FROM %s WHERE id = %s', array( $table_name, $member_id ) ),
+				OBJECT
 			);
-		else :
-			$return = array(
-				'msg'  => 'No Member found by that ID.',
-				'data' => 'none members found.',
-			);
-		endif;
+				
+			if ( ! empty( $results ) ) :
+				$return = array(
+					'msg'  => 'Members info retrived.',
+					'data' => $results,
+				);
+			else :
+				$return = array(
+					'msg'  => 'No Member found by that ID.',
+					'data' => 'none members found.',
+				);
+			endif;
+		}
 
 		return wp_send_json_success( $return, 200 );
 	}
