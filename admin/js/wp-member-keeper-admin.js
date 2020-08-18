@@ -151,13 +151,7 @@
 					       	}
 
 					       	if ( document.querySelector( 'form.edit-member-form input[name=' + key + ']' ) ) {
-					       		if ( 'state' === key ) {
-					       			document.querySelector( 'form.edit-member-form input[name=' + key + ']' ).removeAttribute( 'disabled' );
-					       			document.querySelector( 'form.edit-member-form input[name=' + key + ']' ).value = response[key];
-					       			document.querySelector( 'form.edit-member-form input[name=' + key + ']' ).setAttribute( 'disabled' );
-					       		} else {
-					       			document.querySelector( 'form.edit-member-form input[name=' + key + ']' ).value = response[key];
-					       		}
+								document.querySelector( 'form.edit-member-form input[name=' + key + ']' ).value = response[key];
 					       	}
 					       }
 				       }
