@@ -22,7 +22,7 @@ defined( 'WPINC' ) || exit;
 
 				global $wpdb;
 				$table_name = $wpdb->prefix . str_replace( ' ', '_', str_replace( 'wp ', '', strtolower( WP_MEMBER_KEEPER_NAME ) ) );
-				$results    = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %s", $table_name ) );
+				$results    = $wpdb->get_results( "SELECT * FROM $table_name", OBJECT );
 					
 				$current_logo_id = ( ! empty( get_option( 'wp_member_keeper_logo' ) ) ) ? get_option( 'wp_member_keeper_logo' ) : '' ;
 

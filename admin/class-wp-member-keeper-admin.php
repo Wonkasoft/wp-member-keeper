@@ -218,8 +218,7 @@ class Wp_Member_Keeper_Admin {
 
 		$table_name = $wpdb->prefix . str_replace( ' ', '_', str_replace( 'wp ', '', strtolower( WP_MEMBER_KEEPER_NAME ) ) );
 
-		$results = $wpdb->get_results(
-			$wpdb->prepare(	"SELECT * FROM %s WHERE first_name = '%s' AND last_name = '%s'", $table_name, array( $info->first_name, $info->last_name ) ),
+		$results = $wpdb->get_results( "SELECT * FROM $table_name WHERE first_name = '$info->first_name' AND last_name = '$info->last_name'",
 			OBJECT
 		);
 
@@ -321,8 +320,7 @@ class Wp_Member_Keeper_Admin {
 		);
 
 		if ( ! empty( $results ) ) :
-			$results = $wpdb->get_results(
-				$wpdb->prepare( "SELECT * FROM %s", $table_name ),
+			$results = $wpdb->get_results( "SELECT * FROM $table_name",
 				OBJECT
 			);
 			$return  = array(
@@ -350,8 +348,7 @@ class Wp_Member_Keeper_Admin {
 			
 		$table_name = $wpdb->prefix . str_replace( ' ', '_', str_replace( 'wp ', '', strtolower( WP_MEMBER_KEEPER_NAME ) ) );
 
-		$results = $wpdb->get_results(
-			$wpdb->prepare( "SELECT * FROM %s WHERE id = %d", $table_name, array( $member_id ) ),
+		$results = $wpdb->get_results( "SELECT * FROM $table_name WHERE id = $member_id",
 			OBJECT
 		);
 			
