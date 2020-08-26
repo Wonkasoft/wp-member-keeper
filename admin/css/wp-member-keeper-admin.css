@@ -127,7 +127,7 @@
 .wpmk-fields-container .tab-row .tab-list .tab-item.disabled {
 	opacity: .2;
 	cursor: not-allowed;
-	padding: 0;
+	padding: 0 8px;
 	height: 0;
 	overflow: hidden;
 }
@@ -152,9 +152,9 @@
 	padding: 15px;
 	display: block;
 	top: 0;
-	left: 110%;
 	width: 100%;
 	opacity: 0;
+	z-index: -1;
 	-o-transition: all .3s ease-in-out;
 	-moz-transition: all .3s ease-in-out;
 	-webkit-transition: all .3s ease-in-out;
@@ -164,7 +164,7 @@
 .wpmk-fields-container .tab-content.active {
 	position: relative;
 	opacity: 1;
-	left: 0;
+	z-index: 5;
 }
 
 .prepend-wrap {
