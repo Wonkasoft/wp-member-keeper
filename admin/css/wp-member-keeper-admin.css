@@ -127,6 +127,9 @@
 .wpmk-fields-container .tab-row .tab-list .tab-item.disabled {
 	opacity: .2;
 	cursor: not-allowed;
+	padding: 0;
+	height: 0;
+	overflow: hidden;
 }
 
 .wpmk-fields-container .tab-row .tab-list .tab-item h5 {
