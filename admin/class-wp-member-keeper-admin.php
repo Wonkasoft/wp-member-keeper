@@ -322,7 +322,7 @@ class Wp_Member_Keeper_Admin {
 
 		if ( ! empty( $results ) ) :
 			$results = $wpdb->get_results(
-				$wpdb->prepare( "SELECT * FROM $table_name" ),
+				$wpdb->prepare( "SELECT * FROM %s", $table_name ),
 				OBJECT
 			);
 			$return  = array(
