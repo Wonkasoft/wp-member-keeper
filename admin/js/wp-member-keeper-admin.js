@@ -34,6 +34,7 @@
 			member_table: document.querySelector( 'table.member-table' ),
 			member_tbody: document.querySelector( 'table.member-table tbody' ),
 			tab_list: document.querySelector( '.tab-item.member-list' ),
+			tab_add: document.querySelector( '.tab-item.add-member' ),
 			tab_edit: document.querySelector( '.tab-item.edit-member' ),
 			xhr: new XMLHttpRequest(),
 			submit_data: function( current_form ) {
@@ -245,6 +246,7 @@
 				}
 
 				this.tab_list.addEventListener( 'click', this.edit_tab_check );
+				this.tab_add.addEventListener( 'click', this.edit_tab_check );
 			}
 		};
 		members_interface.init();
