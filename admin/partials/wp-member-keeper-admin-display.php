@@ -22,9 +22,9 @@ defined( 'WPINC' ) || exit;
 
 				global $wpdb;
 				$table_name = $wpdb->prefix . str_replace( ' ', '_', str_replace( 'wp ', '', strtolower( WP_MEMBER_KEEPER_NAME ) ) );
-				$results    = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM ' . $table_name ) );
+				$results    = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name" ) );
 					
-				$current_logo_id = get_option( 'wp_member_keeper_logo' );
+				$current_logo_id = ( ! empty( get_option( 'wp_member_keeper_logo' ) ) ) ? wpunslash( get_option( 'wp_member_keeper_logo' ) ): '' ;
 
 			if ( ! empty( $_FILES ) ) :
 
@@ -86,9 +86,6 @@ defined( 'WPINC' ) || exit;
 				}
 
 				endif;
-			?>
-			<img src="<?php echo esc_url( wp_get_attachment_image_src( $current_logo_id, 'thumbnail', false )[0] ); ?>" srcset="<?php echo wp_get_attachment_image_srcset( $current_logo_id, 'medium', null ); ?>">
-			<?php
 			if ( empty( $current_logo_id ) ) :
 				?>
 					
@@ -97,10 +94,9 @@ defined( 'WPINC' ) || exit;
 						<input type="file" id="logo-img" name="logo-img" accept="image/*.[jpeg|jpg|png|gif]">
 						<input type="submit" id="logo-submit" name="logo-submit">
 					</form>
-
-				<?php
-			endif;
-			?>
+			<?php else: ?>
+				<img src="<?php echo esc_url( wp_get_attachment_image_src( $current_logo_id, 'thumbnail', false )[0] ); ?>" srcset="<?php echo wp_get_attachment_image_srcset( $current_logo_id, 'medium', null ); ?>">
+			<?php endif; ?>
 		</div>
 		<div class="header-title-container">
 			<h2 class="title-text"><?php echo esc_html( WP_MEMBER_KEEPER_NAME ); ?></h2>
