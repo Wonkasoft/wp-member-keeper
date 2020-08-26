@@ -195,7 +195,6 @@ class Wp_Member_Keeper_Admin {
 	 * This function adds new members to the keeper via ajax
 	 */
 	public function add_member_to_keeper() {
-
 		$nonce = ( isset( $_POST['_wpmk_nonce'] ) ) ? stripcslashes( $_POST['_wpmk_nonce'] ) : '';
 		wp_verify_nonce( $nonce, 'wpmk_add_member_form' ) || die( 'Busted!' );
 
@@ -208,9 +207,9 @@ class Wp_Member_Keeper_Admin {
 
 		foreach ( $_POST as $key => $value ) :
 			if ( 'family_id' === $key ) :
-				$info[ $key ] = ( ! empty( $value ) ) ? stripcslashes( $value ) : 0;
+				$info[ $key ] = ( ! empty( $value ) ) ? stripcslashes( trim( $value ) ) : 0;
 			else :
-				$info[ $key ] = ( ! empty( $value ) ) ? stripcslashes( $value ) : '';
+				$info[ $key ] = ( ! empty( $value ) ) ? stripcslashes( trim( $value ) ) : '';
 			endif;
 		endforeach;
 
@@ -218,16 +217,23 @@ class Wp_Member_Keeper_Admin {
 
 		$table_name = $wpdb->prefix . str_replace( ' ', '_', str_replace( 'wp ', '', strtolower( WP_MEMBER_KEEPER_NAME ) ) );
 
-		$results = $wpdb->get_results( "SELECT * FROM $table_name WHERE first_name = '$info->first_name' AND last_name = '$info->last_name'",
+		$exists = $wpdb->get_results( "SELECT * FROM $table_name WHERE first_name = '$info->first_name' AND last_name = '$info->last_name'",
 			OBJECT
 		);
 
-		$return = array(
-			'msg'  => 'Member already exits',
-			'data' => $results,
-		);
+		if ( ! empty( $exists ) ) :
+			$results = $wpdb->get_results( "SELECT * FROM $table_name",
+				OBJECT
+			);
+			
+			$return = array(
+				'msg'  => 'Member ( ' . $info->first_name . ' ' . $info->last_name . ' ) already exists',
+				'exists' => $exists,
+				'data' => $results,
+			);
+		endif; 
 
-		if ( empty( $results ) ) :
+		if ( empty( $exists ) ) :
 			$data    = array(
 				'last_modified'  => $info->last_modified,
 				'first_name'     => $info->first_name,

@@ -304,3 +304,44 @@
 .wpmk-fields-container .tab-content table tbody tr:nth-child( even ) {
 	background: #e5e8f8;
 }
+
+.reponse-msg-section {
+	text-align: center;
+}
+
+.reponse-msg-container {
+	margin: auto;
+	opacity: 0;
+	text-align: center;
+	padding: 8px;
+	height: 0;
+	max-width: 400px;
+	overflow: hidden;
+	-o-transition: all .3s ease-in-out;
+	-moz-transition: all .3s ease-in-out;
+	-webkit-transition: all .3s ease-in-out;
+	transition: all .3s ease-in-out;
+}
+
+.reponse-msg-container.active {
+	opacity: 1;
+	height: 100px;
+}
+
+.alert {
+	margin: 1rem auto 0;
+	position: relative;
+    padding: .75rem 1.25rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+	border-radius: 4px;
+	box-shadow: 0 1px 5px 0 rgba( 0,0,0,.4);
+}
+
+.alert-warning {
+	color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+}

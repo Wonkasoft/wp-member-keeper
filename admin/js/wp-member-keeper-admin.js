@@ -22,10 +22,13 @@
 
 	if ( document.querySelector( 'form.add-member-form' ) ) {
 		var members_interface = {
+			response_container: document.querySelector( '.reponse-msg-container' ),
 			add_form: document.querySelector( 'form.add-member-form' ),
 			edit_form: document.querySelector( 'form.edit-member-form' ),
 			add_inputs: document.querySelectorAll( 'form.add-member-form input' ),
+			add_phone: document.querySelector( 'form.add-member-form input[name="phone"]' ),
 			edit_inputs: document.querySelectorAll( 'form.edit-member-form input' ),
+			edit_phone: document.querySelector( 'form.edit-member-form input[name="phone"]' ),
 			data_check: true,
 			submit_btn: document.querySelector( '#add_member_submit' ),
 			edit_submit_btn: document.querySelector( '#edit_member_submit' ),
@@ -45,15 +48,7 @@
 					var value = input.value;
 
 					if ( 'add_member_submit' !== input.id && 'edit_member_submit' !== input.id && '' !== input.name ) {
-						if ( 'phone' == key_name ) {
-							var cleaned = ('' + value).replace(/\D/g, '');
-							var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
-							if ( match ) {
-								data[key_name] = '(' + match[1] + ') ' + match[2] + '-' + match[3];
-							}
-						} else {
-							data[key_name] = value;
-						}
+						data[key_name] = value;
 					}
 				});
 				var query_string = Object.keys( data ).map( function( key ) { return key + '=' + data[key]; } ).join('&');
@@ -62,6 +57,8 @@
 				       // Typical action to be performed when the document is ready:
 				       if ( 'undefined' != members_interface.xhr.responseText ) {
 				       		var response = JSON.parse( members_interface.xhr.responseText );
+				       		members_interface.response_container.classList.add( 'active' );
+				       		members_interface.response_container.querySelector( '.alert' ).innerText = response.data.msg;
 				       		members_interface[current_form + '_inputs'].forEach( function( input, i ) {
 				       			if ( 'add_member_submit' !== input.id && 'edit_member_submit' !== input.id && '' !== input.name && 'hidden' !== input.type ) {
 				       				input.value = '';
@@ -76,11 +73,11 @@
 						        	var family_id = ( 0 == member.family_id ) ? member.id: member.family_id;
 									new_member_tbody += '<tr>';
 									new_member_tbody += '<td>' + family_id + '</td>';
-									new_member_tbody += '<td>' + member.first_name + '</td>';
-									new_member_tbody += '<td>' + member.last_name + '</td>';
-									new_member_tbody += '<td>' + member.phone + '</td>';
-									new_member_tbody += '<td>' + member.email + '</td>';
-									new_member_tbody += '<td>' + member.ministries + '</td>';
+									new_member_tbody += '<td>' + ( member.first_name ? member.first_name: '' ) + '</td>';
+									new_member_tbody += '<td>' + ( member.last_name ? member.last_name: '' ) + '</td>';
+									new_member_tbody += '<td>' + ( member.phone ? member.phone: '' ) + '</td>';
+									new_member_tbody += '<td>' + ( member.email ? member.email: '' ) + '</td>';
+									new_member_tbody += '<td>' + ( member.ministries ? member.ministries: '' ) + '</td>';
 									new_member_tbody += '<td><i data-member="' + member.id + '" class="fas fa-user-edit edit"></i> <i data-member="' + member.id + '" class="fas fa-trash-alt remove"></i></td>';
 									new_member_tbody += '</tr>';
 						        });
@@ -99,6 +96,13 @@
 					        	members_interface.tab_list.click();
 					        	members_interface.tab_edit.classList.add( 'disabled' );
 					        	members_interface.tab_edit.setAttribute( 'disabled', true );
+					        }
+
+					        if ( '' != members_interface.response_container.querySelector( '.alert' ).innerText ) {
+					        	setTimeout( function() {
+				       				members_interface.response_container.classList.remove( 'active' );
+				       				members_interface.response_container.querySelector( '.alert' ).innerText = '';
+					        	}, 3500 );
 					        }
 				       }
 
@@ -186,7 +190,7 @@
 								new_member_tbody += '<td>' + family_id + '</td>';
 								new_member_tbody += '<td>' + member.first_name + '</td>';
 								new_member_tbody += '<td>' + member.last_name + '</td>';
-								new_member_tbody += '<td>' + member.phone + '</td>';
+								new_member_tbody += '<td>' + ( null != member.phone ? member.phone: '' ) + '</td>';
 								new_member_tbody += '<td>' + member.email + '</td>';
 								new_member_tbody += '<td>' + member.ministries + '</td>';
 								new_member_tbody += '<td><i data-member="' + member.id + '" class="fas fa-user-edit edit"></i> <i data-member="' + member.id + '" class="fas fa-trash-alt remove"></i></td>';
@@ -233,10 +237,38 @@
 			get_member_edit_nonce: function() {
 				return document.querySelector( '.member-table' ).getAttribute( 'data-security' );
 			},
-			edit_tab_check: function() {
+			edit_tab_check: function( e ) {
 				if ( true != members_interface.tab_edit.disabled ) {
 					members_interface.tab_edit.classList.add( 'disabled' );
 					members_interface.tab_edit.setAttribute( 'disabled', true );
+				}
+			},
+			phone_sanitize: function( e ) {
+				if ( null == e.data ) {
+					return;
+				}
+
+				var phone_el = e.target;
+				var cleaned = phone_el.value.replace(/\D/g, '');
+				var phone_pattern = '(___) ___-____';
+				var area_code = cleaned.match(/^(\d{3})$/);
+				var prefix = cleaned.match(/^(\d{3})(\d{3})$/);
+				var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+				
+				if ( 14 < phone_el.value.length ) {
+					phone_el.value = phone_el.value.slice( 0, 14 );
+				}
+
+				if ( area_code ) {
+					phone_el.value = '(' + area_code[1] + ') ';
+				}
+
+				if ( prefix ) {
+					phone_el.value = '(' + prefix[1] + ') ' + prefix[2];
+				}
+
+				if ( match ) {
+					phone_el.value = '(' + match[1] + ') ' + match[2] + '-' + match[3];
 				}
 			},
 			init: function() {
@@ -247,6 +279,8 @@
 
 				this.tab_list.addEventListener( 'click', this.edit_tab_check );
 				this.tab_add.addEventListener( 'click', this.edit_tab_check );
+				this.add_phone.addEventListener( 'input', this.phone_sanitize );
+				this.edit_phone.addEventListener( 'input', this.phone_sanitize );
 			}
 		};
 		members_interface.init();

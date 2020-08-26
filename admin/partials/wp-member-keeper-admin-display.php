@@ -102,6 +102,12 @@ defined( 'WPINC' ) || exit;
 			<h2 class="title-text"><?php echo esc_html( WP_MEMBER_KEEPER_NAME ); ?></h2>
 		</div>
 	</section>
+	<section class="response-msg-section">
+		<div class="reponse-msg-container">
+			<div class="alert alert-warning text-center" role="alert">
+			</div>
+		</div>
+	</section>
 	<section class="wpmk-fields-container">
 		<div class="tab-row">
 			<ul class="tab-list">
